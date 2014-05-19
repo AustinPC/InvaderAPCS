@@ -18,6 +18,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 	
 	//Here
 	
+	//Here
     private int SDV = -9;
     // PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
     private int BSDS = 5;
