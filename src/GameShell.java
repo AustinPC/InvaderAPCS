@@ -15,10 +15,6 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     // #### MASTER SETTINGS #########################
     // DOODLE BOUNCE VELOCITY (SMALLER (negative) number for higher jumps)
 
-	
-	//Here
-	
-	//Here
     private int SDV = -9;
     // PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
     private int BSDS = 5;
@@ -93,7 +89,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         mt = new MediaTracker(this);
         gridImg = Toolkit.getDefaultToolkit().getImage("images/bg-grid.png");
         topbar = Toolkit.getDefaultToolkit().getImage("images/topbar.png");
-        bulletImg = Toolkit.getDefaultToolkit().getImage("images/bullet.png");
+        bulletImg = Toolkit.getDefaultToolkit().getImage("images/laser.png");
 
         intro0 = Toolkit.getDefaultToolkit().getImage("images/menu/intro0.png");
         intro1 = Toolkit.getDefaultToolkit().getImage("images/menu/intro1.png");
@@ -103,18 +99,18 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         gameover0 = Toolkit.getDefaultToolkit().getImage("images/menu/gameover0.png");
         gameover1 = Toolkit.getDefaultToolkit().getImage("images/menu/gameover1.png");
 
-        doodleRImg = Toolkit.getDefaultToolkit().getImage("images/doodleR.png");
-        doodleLImg = Toolkit.getDefaultToolkit().getImage("images/doodleL.png");
-        doodleSImg = Toolkit.getDefaultToolkit().getImage("images/doodleS.png");
+        doodleRImg = Toolkit.getDefaultToolkit().getImage("images/Galaga_ship.png");
+        doodleLImg = Toolkit.getDefaultToolkit().getImage("images/Galaga_ship.png");
+        doodleSImg = Toolkit.getDefaultToolkit().getImage("images/Galaga_ship.png");
 
         batM1 = Toolkit.getDefaultToolkit().getImage("images/monsters/bat1.png");
         batM2 = Toolkit.getDefaultToolkit().getImage("images/monsters/bat2.png");
         batM3 = Toolkit.getDefaultToolkit().getImage("images/monsters/bat3.png");
 
-        greenS0 = Toolkit.getDefaultToolkit().getImage("images/p-green-s0.png");
-        greenS1 = Toolkit.getDefaultToolkit().getImage("images/p-green-s1.png");
-        greenP = Toolkit.getDefaultToolkit().getImage("images/p-green.png");
-        blueP = Toolkit.getDefaultToolkit().getImage("images/p-blue.png");
+        greenS0 = Toolkit.getDefaultToolkit().getImage("images/p-green-s1.png");
+        greenS1 = Toolkit.getDefaultToolkit().getImage("images/p-green-s0.png");
+        greenP = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        blueP = Toolkit.getDefaultToolkit().getImage("images/star.png");
         whiteP = Toolkit.getDefaultToolkit().getImage("images/p-white.png");
         dblueP = Toolkit.getDefaultToolkit().getImage("images/p-dblue.png");
         dblueP = Toolkit.getDefaultToolkit().getImage("images/p-dblue.png");
@@ -725,35 +721,35 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         color = (int) (Math.random() * 110) + 1;
 
-        if (level == 0) {
-            color = 1;
-        }
+//        if (level == 0) {
+//            color = 1;
+//        }
 
         int xp = (int) (Math.random() * 400);
         int yp = (int) (Math.random() * 10);
         yp = yp * -1;
 
         // green
-        if ((color > 0) && (color <= 50)) {
-            // makes the game harder, less green platforms
-            if (level == 2) {
-                color = (int) (Math.random() * 99) + 1;
-            } else if (level == 3) {
-                color = (int) (Math.random() * 70) + 30;
-            } else if (level == 4) {
-                color = (int) (Math.random() * 63) + 45;
-            } else if (level == 5) {
-                color = (int) (Math.random() * 63) + 45;
-            }
-
-            if ((color > 0) && (color <= 50)) {
-                Platform plat1 = new Platform(1, xp, yp, 58, 15);
-                myPlatforms.add(plat1);
-            }
-        }
+//        if ((color > 0) && (color <= 50)) {
+//            // makes the game harder, less green platforms
+//            if (level == 2) {
+//                color = (int) (Math.random() * 99) + 1;
+//            } else if (level == 3) {
+//                color = (int) (Math.random() * 70) + 30;
+//            } else if (level == 4) {
+//                color = (int) (Math.random() * 63) + 45;
+//            } else if (level == 5) {
+//                color = (int) (Math.random() * 63) + 45;
+//            }
+//
+//            if ((color > 0) && (color <= 50)) {
+//                Platform plat1 = new Platform(1, xp, yp, 58, 15);
+//                myPlatforms.add(plat1);
+//            }
+//        }
 
         // light blue LR
-        if ((color > 50) && (color <= 60) && (level > 1)) {
+        if ((color > 20) && (color <= 80) && (level >= 0)) {
             Platform plat2 = new Platform(2, xp, yp, 56, 16);
             myPlatforms.add(plat2);
         }
@@ -763,58 +759,58 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         }
 
         //brown
-        if ((color > 60) && (color <= 70)) {
-            // makes sure there are not 2 brown in a row
-            if (myPlatforms.get(myPlatforms.size() - 1).getId() == 3) {
-                Platform plat1 = new Platform(1, xp, yp, 58, 15);
-                myPlatforms.add(plat1);
-            } else {
-                Platform plat3 = new Platform(3, xp, yp, 68, 20);
-                myPlatforms.add(plat3);
-            }
-        }
+//        if ((color > 60) && (color <= 70)) {
+//            // makes sure there are not 2 brown in a row
+//            if (myPlatforms.get(myPlatforms.size() - 1).getId() == 3) {
+//                Platform plat1 = new Platform(1, xp, yp, 58, 15);
+//                myPlatforms.add(plat1);
+//            } else {
+//                Platform plat3 = new Platform(3, xp, yp, 68, 20);
+//                myPlatforms.add(plat3);
+//            }
+//        }
 
         //white
-        if ((color > 70) && (color <= 80)) {
-            if (level == 5) {
-                color = (int) (Math.random() * 63) + 45;
-            }
-
-            if ((color > 70) && (color <= 80)) {
-                Platform plat9 = new Platform(9, xp, yp, 58, 15);
-                myPlatforms.add(plat9);
-            }
-
-        }
+//        if ((color > 70) && (color <= 80)) {
+//            if (level == 5) {
+//                color = (int) (Math.random() * 63) + 45;
+//            }
+//
+//            if ((color > 70) && (color <= 80)) {
+//                Platform plat9 = new Platform(9, xp, yp, 58, 15);
+//                myPlatforms.add(plat9);
+//            }
+//
+//        }
 
         // dark blue - vertical scroll
-        if ((color > 90) && (color <= 100)) {
-            Platform plat10 = new Platform(10, xp, yp, 57, 15);
-            myPlatforms.add(plat10);
-        }
-
-        if ((color > 100) && (color <= 105)) {
-            Doodle dod = (Doodle) myGuys.get(0);
-
-            if (level >= 2) {
-                if (springCount < 1) {
-                    if (dod.getY() > 200) {
-                        if (myMonsters.size() < 1) {
-                            generateMonster();
-                        }
-                    }
-                }
-            }
-
-            Platform plat1 = new Platform(1, xp, yp, 58, 15);
-            myPlatforms.add(plat1);
-        }
-
-
-        if ((color > 105) && (color <= 108)) {
-            Platform plat1 = new Platform(14, xp, yp, 57, 23);
-            myPlatforms.add(plat1);
-        }
+//        if ((color > 90) && (color <= 100)) {
+//            Platform plat10 = new Platform(10, xp, yp, 57, 15);
+//            myPlatforms.add(plat10);
+//        }
+//
+//        if ((color > 100) && (color <= 105)) {
+//            Doodle dod = (Doodle) myGuys.get(0);
+//
+//            if (level >= 2) {
+//                if (springCount < 1) {
+//                    if (dod.getY() > 200) {
+//                        if (myMonsters.size() < 1) {
+//                            generateMonster();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            Platform plat1 = new Platform(1, xp, yp, 58, 15);
+//            myPlatforms.add(plat1);
+//        }
+//
+//
+//        if ((color > 105) && (color <= 108)) {
+//            Platform plat1 = new Platform(14, xp, yp, 57, 23);
+//            myPlatforms.add(plat1);
+//        }
 
     }
 
