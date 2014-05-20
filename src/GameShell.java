@@ -160,6 +160,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         myImages.add(greenS0);	// 14
         myImages.add(greenS1);	// 15
         myImages.add(borderF);	// 16
+        myImages.add(expl);		//17
 
         // load images to Media Tracker
         for (Image i : myImages) {
@@ -826,12 +827,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
     public void checkBulletHit() {
     try{
-        //checks if each bullet hits a monster
-        for (int a = 0; a < myMonsters.size(); a++) {
-            if (myMonsters.size() > 0) {
+        //checks if each bullet hits a platform
+        for (int a = 0; a < myPlatforms.size(); a++) {
+            if (myPlatforms.size() > 0) {
                 for (int k = 0; k < myBullets.size(); k++) {
-                    if (myBullets.get(k).equals(myMonsters.get(a))) {
-                        myMonsters.remove(a);
+                    if (myBullets.get(k).equals(myPlatforms.get(a))) {
+                    	
+                    	myPlatforms.remove(a);
                         myBullets.remove(k);
                         score = score + 500;
                     }
