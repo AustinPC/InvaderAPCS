@@ -37,7 +37,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     private MediaTracker mt;
     private Image gridImg, topbar, bulletImg;
     private Image doodleRImg, doodleLImg, doodleSImg;
-    private Image greenP, blueP, whiteP, dblueP, greenS0, greenS1;
+    private Image starB, starW, whiteP, dblueP, greenS0, greenS1, expl;
     private Image brownP1, brownP2, brownP3, brownP4, brownP5, brownP6;
     private Image batM1, batM2, batM3;
     private Image intro0, intro1, intro3, scores0, scores1, gameover0, gameover1;
@@ -110,8 +110,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         greenS0 = Toolkit.getDefaultToolkit().getImage("images/p-green-s1.png");
         greenS1 = Toolkit.getDefaultToolkit().getImage("images/p-green-s0.png");
-        greenP = Toolkit.getDefaultToolkit().getImage("images/star.png");
-        blueP = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        starB = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        starW = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        expl = Toolkit.getDefaultToolkit().getImage("images/explosion.png");
         whiteP = Toolkit.getDefaultToolkit().getImage("images/p-white.png");
         dblueP = Toolkit.getDefaultToolkit().getImage("images/p-dblue.png");
         dblueP = Toolkit.getDefaultToolkit().getImage("images/p-dblue.png");
@@ -143,8 +144,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         myImages = new ArrayList();
         // add all images
         myImages.add(doodleRImg);// 0
-        myImages.add(greenP);	// 1
-        myImages.add(blueP);	// 2
+        myImages.add(starB);	// 1
+        myImages.add(starW);	// 2
         myImages.add(brownP1);	// 3
         myImages.add(brownP2);	// 4
         myImages.add(brownP3);	// 5
@@ -1302,8 +1303,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 } // make images original
                 else if (FOREST_MODE == true) {
                     myImages.set(10, dblueP);
-                    myImages.set(1, greenP);
-                    myImages.set(2, blueP);
+                    myImages.set(1, starB);
+                    myImages.set(2, starW);
                     myImages.set(9, whiteP);
                     myImages.set(14, greenS0);
                     myImages.set(15, greenS1);
