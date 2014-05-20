@@ -22,6 +22,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     private int DSDS = 1;
     private int level = 0;
     // ################################################
+    
     private int score = 0;
     // ArrayLists to store characters and images
     private ArrayList<Character> myGuys;
@@ -87,7 +88,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         // prepare images
         mt = new MediaTracker(this);
-        gridImg = Toolkit.getDefaultToolkit().getImage("images/bg-grid.png");
+        gridImg = Toolkit.getDefaultToolkit().getImage("images/starsAndspace.png");
         topbar = Toolkit.getDefaultToolkit().getImage("images/topbar.png");
         bulletImg = Toolkit.getDefaultToolkit().getImage("images/laser.png");
 
