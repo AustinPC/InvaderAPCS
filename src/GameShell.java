@@ -1028,6 +1028,76 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         myBullets.add(bnew);
 
     }
+    
+    public void createAltBullet(int mx, int my, int x) {
+        // #############################################################
+        // THIS IS WHERE ALL THE MATH MAGIC HAPPENS FOR BULLETS
+        Doodle doodle = (Doodle) myGuys.get(0);
+
+        int dx = doodle.getX() + 16 + x;
+        int dy = doodle.getY() - 15;
+        int dw = doodle.getWidth() / 2;
+
+        Bullet bnew = new Bullet(11, dx, dy, 10, 11);
+
+        /* make a triangle, find base leg and height, find hypotnouse
+        reduce the base and height to smaller numbers for less velocity
+        move the bullet using base leg and height to travel at angle
+         */
+
+        int triangleLeg = Math.abs(mx);
+        int triangleHeight = Math.abs(my);
+
+       // int hypo = 0;
+        int hypo = (int) Math.sqrt(Math.pow(triangleLeg, 2) + Math.pow(triangleHeight, 2));
+
+        int numMoves = (int) hypo / 10;
+
+        int legStep = (int) (mx) / 10;
+        int heightStep = (int) (my) / 10;
+
+        // minimum bullet speed is 6
+        if ((legStep > -6) && (legStep < 0)) {
+            legStep = -6;
+        }
+        if ((legStep < 6) && (legStep > 0)) {
+            legStep = 6;
+        }
+
+        if ((heightStep > -6) && (heightStep < 0)) {
+            heightStep = -6;
+        }
+        if ((heightStep < 6) && (heightStep > 0)) {
+            heightStep = 6;
+        }
+
+        // tries to keep speed consistent
+        while (Math.abs(legStep) > 10) {
+            if (heightStep != 0) {
+                heightStep = heightStep / 2;
+            }
+            if (legStep != 0) {
+                legStep = legStep / 2;
+            }
+        }
+
+        while (Math.abs(heightStep) > 10) {
+            if (heightStep != 0) {
+                heightStep = heightStep / 2;
+            }
+            if (legStep != 0) {
+                legStep = legStep / 2;
+            }
+        }
+
+        //	System.out.println("Legstep: "+legStep+ " Heightstep: "+heightStep);
+
+        bnew.setLegStep(legStep);
+        bnew.setHeightStep(heightStep);
+
+        myBullets.add(bnew);
+
+    }
 
     public void resetGame() {
         // resets all variables to start new game
@@ -1242,6 +1312,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             case KeyEvent.VK_SHIFT: {
                 //shift key
             	createBullet(0, -180);
+                break;
+            }
+            
+            case KeyEvent.VK_PERIOD: {
+                //shift key
+            	createBullet(0, -180);
+            	createAltBullet(0, -180, 9);
+            	createAltBullet(0, -180, -9);
                 break;
             }
 
