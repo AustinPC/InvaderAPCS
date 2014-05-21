@@ -764,7 +764,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 //        }
 
         // light blue LR
+<<<<<<< HEAD
         if ((color > 45) && (color <= 50) && (level >= 0)) {
+=======
+        if ((color > 30) && (color <= 60) && (level >= 0)) {
+>>>>>>> 12c8b2bd0e60fcc8cee631393821cc011b150f49
             Platform plat2 = new Platform(2, xp, yp, 56, 16);
             myPlatforms.add(plat2);
         }
