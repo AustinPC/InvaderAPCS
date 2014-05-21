@@ -17,11 +17,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
     private int SDV = -9;
     // PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
-    private int BSDS = 5;
+    private int BSDS = 10;
     // DOODLE SCROLL DOWN SPEED (higher number to fall faster)
     private int DSDS = 1;
     private int level = 0;
     // ################################################
+    
     private int score = 0;
     // ArrayLists to store characters and images
     private ArrayList<Character> myGuys;
@@ -36,7 +37,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     private MediaTracker mt;
     private Image gridImg, topbar, bulletImg;
     private Image doodleRImg, doodleLImg, doodleSImg;
-    private Image greenP, blueP, whiteP, dblueP, greenS0, greenS1;
+    private Image starB, starW, whiteP, dblueP, greenS0, greenS1, expl;
     private Image brownP1, brownP2, brownP3, brownP4, brownP5, brownP6;
     private Image batM1, batM2, batM3;
     private Image intro0, intro1, intro3, scores0, scores1, gameover0, gameover1;
@@ -87,7 +88,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         // prepare images
         mt = new MediaTracker(this);
-        gridImg = Toolkit.getDefaultToolkit().getImage("images/bg-grid.png");
+        gridImg = Toolkit.getDefaultToolkit().getImage("images/starsAndspace.png");
         topbar = Toolkit.getDefaultToolkit().getImage("images/topbar.png");
         bulletImg = Toolkit.getDefaultToolkit().getImage("images/laser.png");
 
@@ -109,8 +110,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         greenS0 = Toolkit.getDefaultToolkit().getImage("images/p-green-s1.png");
         greenS1 = Toolkit.getDefaultToolkit().getImage("images/p-green-s0.png");
-        greenP = Toolkit.getDefaultToolkit().getImage("images/star.png");
-        blueP = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        starB = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        starW = Toolkit.getDefaultToolkit().getImage("images/star.png");
+        expl = Toolkit.getDefaultToolkit().getImage("images/explosion.png");
         whiteP = Toolkit.getDefaultToolkit().getImage("images/p-white.png");
         dblueP = Toolkit.getDefaultToolkit().getImage("images/p-dblue.png");
         dblueP = Toolkit.getDefaultToolkit().getImage("images/p-dblue.png");
@@ -142,8 +144,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         myImages = new ArrayList();
         // add all images
         myImages.add(doodleRImg);// 0
-        myImages.add(greenP);	// 1
-        myImages.add(blueP);	// 2
+        myImages.add(starB);	// 1
+        myImages.add(starW);	// 2
         myImages.add(brownP1);	// 3
         myImages.add(brownP2);	// 4
         myImages.add(brownP3);	// 5
@@ -158,6 +160,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         myImages.add(greenS0);	// 14
         myImages.add(greenS1);	// 15
         myImages.add(borderF);	// 16
+        myImages.add(expl);		//17
 
         // load images to Media Tracker
         for (Image i : myImages) {
@@ -554,7 +557,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
             if (springCount < 1) {
                 SDV = -9;
-                BSDS = 5;
+                BSDS = 3;
                 DSDS = 1;
             }
 
@@ -563,7 +566,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             }
 
             // if doodle is moving up
-            shiftDown = false;
+            shiftDown = true;
 
             if (tempDoodle.getVelocity() < 0) {
                 shiftDown = true;
@@ -824,12 +827,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
     public void checkBulletHit() {
     try{
-        //checks if each bullet hits a monster
-        for (int a = 0; a < myMonsters.size(); a++) {
-            if (myMonsters.size() > 0) {
+        //checks if each bullet hits a platform
+        for (int a = 0; a < myPlatforms.size(); a++) {
+            if (myPlatforms.size() > 0) {
                 for (int k = 0; k < myBullets.size(); k++) {
-                    if (myBullets.get(k).equals(myMonsters.get(a))) {
-                        myMonsters.remove(a);
+                    if (myBullets.get(k).equals(myPlatforms.get(a))) {
+                    	
+                    	myPlatforms.remove(a);
                         myBullets.remove(k);
                         score = score + 500;
                     }
@@ -959,15 +963,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         move the bullet using base leg and height to travel at angle
          */
 
-        int triangleLeg = Math.abs(mx) - Math.abs(dx);
-        int triangleHeight = Math.abs(my) - Math.abs(dy);
+        int triangleLeg = Math.abs(mx);
+        int triangleHeight = Math.abs(my);
 
+       // int hypo = 0;
         int hypo = (int) Math.sqrt(Math.pow(triangleLeg, 2) + Math.pow(triangleHeight, 2));
 
         int numMoves = (int) hypo / 10;
 
-        int legStep = (int) (mx - dx) / 10;
-        int heightStep = (int) (my - dy) / 10;
+        int legStep = (int) (mx) / 10;
+        int heightStep = (int) (my) / 10;
 
         // minimum bullet speed is 6
         if ((legStep > -6) && (legStep < 0)) {
@@ -1054,6 +1059,23 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         myGuys.set(0, doodle2);
     }
+    
+    public void overrideUD(int f) {
+        // for keyboard input
+        Doodle doodle2 = (Doodle) myGuys.get(0);
+        doodle2.setVFacing(f);
+
+        // set image L and R
+//        if (f == -1) {
+//            myImages.set(0, doodleLImg);
+//            doodle2.setX(doodle2.getX());
+//        } else if (f == 1) {
+//            myImages.set(0, doodleRImg);
+//            doodle2.setX(doodle2.getX());
+//        }
+
+        myGuys.set(0, doodle2);
+    }
 
     public void paint(Graphics g) {
         update(g);
@@ -1065,7 +1087,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         if (gameOn == true) {
             myImages.set(0, doodleSImg);
             if (myBullets.size() < 5) {
-                createBullet(me.getX(), me.getY());
+                createBullet(0, -180);
             }
         }
 
@@ -1172,6 +1194,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         if (gameOn == true) {
             if ((e.getKeyCode() == 37) || (e.getKeyCode() == (39))) {
                 overrideLR(0);
+                
+            }
+            else if((e.getKeyCode() == (38)) 
+            		|| (e.getKeyCode() == (40))){
+            	overrideUD(0);
             }
         }
     }
@@ -1239,12 +1266,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
                 break;
             case 38:
-                /*   //up arrow 
-                {
-                Doodle temp = (Doodle) myGuys.get(0);
-                temp.setVelocity(SDV);
-                myGuys.set(0,temp);
-                } */
+                //up arrow 
+                overrideUD(-1);
 
 
                 break;
@@ -1255,7 +1278,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 break;
             case 40:
                 //down arrow 
-
+            	overrideUD(1);
+            	
                 break;
 
             // escape key, return to main menu
@@ -1301,8 +1325,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 } // make images original
                 else if (FOREST_MODE == true) {
                     myImages.set(10, dblueP);
-                    myImages.set(1, greenP);
-                    myImages.set(2, blueP);
+                    myImages.set(1, starB);
+                    myImages.set(2, starW);
                     myImages.set(9, whiteP);
                     myImages.set(14, greenS0);
                     myImages.set(15, greenS1);

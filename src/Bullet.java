@@ -11,7 +11,7 @@ public class Bullet extends Character
 	public Bullet(int id, int x, int y, int w, int h)
 	{
 		super(id,x,y,w,h);
-		stepy=5;
+		stepy=20;
 	}
 	
 	public void move()
