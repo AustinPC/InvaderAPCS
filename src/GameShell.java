@@ -1315,7 +1315,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 break;
             }
             
-            case KeyEvent.VK_PERIOD: {
+            case KeyEvent.VK_Z: {
                 //shift key
             	createBullet(0, -180);
             	createAltBullet(0, -180, 9);
