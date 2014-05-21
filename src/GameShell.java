@@ -1238,6 +1238,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 score = 5000;
                 break;
             }
+            
+            case KeyEvent.VK_SHIFT: {
+                //shift key
+            	createBullet(0, -180);
+                break;
+            }
 
             case 50: {
                 //2 key
