@@ -17,7 +17,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
     private int SDV = -9;
     // PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
-    private int BSDS = 5;
+    private int BSDS = 1;
     // DOODLE SCROLL DOWN SPEED (higher number to fall faster)
     private int DSDS = 1;
     private int level = 0;
@@ -557,7 +557,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
             if (springCount < 1) {
                 SDV = -9;
-                BSDS = 5;
+                BSDS = 3;
                 DSDS = 1;
             }
 
@@ -566,7 +566,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             }
 
             // if doodle is moving up
-            shiftDown = false;
+            shiftDown = true;
 
             if (tempDoodle.getVelocity() < 0) {
                 shiftDown = true;
@@ -966,7 +966,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         int triangleLeg = Math.abs(mx) - Math.abs(dx);
         int triangleHeight = Math.abs(my) - Math.abs(dy);
 
-        int hypo = (int) Math.sqrt(Math.pow(triangleLeg, 2) + Math.pow(triangleHeight, 2));
+        int hypo = 0;
+        //int hypo = (int) Math.sqrt(Math.pow(triangleLeg, 2) + Math.pow(triangleHeight, 2));
 
         int numMoves = (int) hypo / 10;
 
@@ -1055,6 +1056,23 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             myImages.set(0, doodleRImg);
             doodle2.setX(doodle2.getX());
         }
+
+        myGuys.set(0, doodle2);
+    }
+    
+    public void overrideUD(int f) {
+        // for keyboard input
+        Doodle doodle2 = (Doodle) myGuys.get(0);
+        doodle2.setVFacing(f);
+
+        // set image L and R
+//        if (f == -1) {
+//            myImages.set(0, doodleLImg);
+//            doodle2.setX(doodle2.getX());
+//        } else if (f == 1) {
+//            myImages.set(0, doodleRImg);
+//            doodle2.setX(doodle2.getX());
+//        }
 
         myGuys.set(0, doodle2);
     }
@@ -1176,6 +1194,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         if (gameOn == true) {
             if ((e.getKeyCode() == 37) || (e.getKeyCode() == (39))) {
                 overrideLR(0);
+                
+            }
+            else if((e.getKeyCode() == (38)) 
+            		|| (e.getKeyCode() == (40))){
+            	overrideUD(0);
             }
         }
     }
@@ -1243,12 +1266,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
                 break;
             case 38:
-                /*   //up arrow 
-                {
-                Doodle temp = (Doodle) myGuys.get(0);
-                temp.setVelocity(SDV);
-                myGuys.set(0,temp);
-                } */
+                //up arrow 
+                overrideUD(-1);
 
 
                 break;
@@ -1259,7 +1278,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 break;
             case 40:
                 //down arrow 
-
+            	overrideUD(1);
+            	
                 break;
 
             // escape key, return to main menu
