@@ -17,7 +17,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
     private int SDV = -9;
     // PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
-    private int BSDS = 1;
+    private int BSDS = 10;
     // DOODLE SCROLL DOWN SPEED (higher number to fall faster)
     private int DSDS = 1;
     private int level = 0;
@@ -963,16 +963,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         move the bullet using base leg and height to travel at angle
          */
 
-        int triangleLeg = Math.abs(mx) - Math.abs(dx);
-        int triangleHeight = Math.abs(my) - Math.abs(dy);
+        int triangleLeg = Math.abs(mx);
+        int triangleHeight = Math.abs(my);
 
-        int hypo = 0;
-        //int hypo = (int) Math.sqrt(Math.pow(triangleLeg, 2) + Math.pow(triangleHeight, 2));
+       // int hypo = 0;
+        int hypo = (int) Math.sqrt(Math.pow(triangleLeg, 2) + Math.pow(triangleHeight, 2));
 
         int numMoves = (int) hypo / 10;
 
-        int legStep = (int) (mx - dx) / 10;
-        int heightStep = (int) (my - dy) / 10;
+        int legStep = (int) (mx) / 10;
+        int heightStep = (int) (my) / 10;
 
         // minimum bullet speed is 6
         if ((legStep > -6) && (legStep < 0)) {
@@ -1087,7 +1087,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         if (gameOn == true) {
             myImages.set(0, doodleSImg);
             if (myBullets.size() < 5) {
-                createBullet(me.getX(), me.getY());
+                createBullet(0, -180);
             }
         }
 
