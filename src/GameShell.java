@@ -40,7 +40,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     private Image starB, starW, whiteP, dblueP, greenS0, greenS1, expl;
     private Image brownP1, brownP2, brownP3, brownP4, brownP5, brownP6;
     private Image batM1, batM2, batM3;
-    private Image intro0, intro1, intro3, scores0, scores1, gameover0, gameover1;
+    private Image intro0, intro2, intro1, intro3, intro4, scores0, scores1, gameover0, gameover1;
     private Image gridF, borderF, dblueF, greenF, whiteF, greenS0F, greenS1F;
     private Image brownF1, brownF2, brownF3, brownF4, brownF5, brownF6;
     private Character doodle;
@@ -92,9 +92,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         topbar = Toolkit.getDefaultToolkit().getImage("images/topbar.png");
         bulletImg = Toolkit.getDefaultToolkit().getImage("images/laser.png");
 
-        intro0 = Toolkit.getDefaultToolkit().getImage("images/menu/intro0.png");
-        intro1 = Toolkit.getDefaultToolkit().getImage("images/menu/intro1.png");
-        intro3 = Toolkit.getDefaultToolkit().getImage("images/menu/intro3.png");
+        intro0 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_main.png");
+        intro1 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_play.png");
+        intro2 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_challenge.png");
+        intro3 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_scores.png");
+        intro4 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_menu.png");
         scores0 = Toolkit.getDefaultToolkit().getImage("images/menu/scores0.png");
         scores1 = Toolkit.getDefaultToolkit().getImage("images/menu/scores1.png");
         gameover0 = Toolkit.getDefaultToolkit().getImage("images/menu/gameover0.png");
