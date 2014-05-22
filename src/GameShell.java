@@ -135,7 +135,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		starW = Toolkit.getDefaultToolkit().getImage("images/star.png");
 		expl = Toolkit.getDefaultToolkit().getImage("images/explosion.png");
 		whiteP = Toolkit.getDefaultToolkit().getImage("images/p-white.png");
-		astr = Toolkit.getDefaultToolkit().getImage("images/astroid.png");
+		astr = Toolkit.getDefaultToolkit().getImage("images/asteroid.png");
 		reward = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
 
 		// brown block animation
@@ -200,7 +200,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		myImages.add(greenS1); // 15
 		myImages.add(borderF); // 16
 		myImages.add(expl); // 17
-		myImages.add(reward); //18
+		myImages.add(astr); // 18
+		myImages.add(reward); // 19
 
 		// load images to Media Tracker
 		for (Image i : myImages) {
@@ -321,7 +322,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			
 				offScreenBuffer.drawImage(myImages.get(astroid.getId()),
 						astroid.getX(), astroid.getY(), this);
-				astroid.setId(plat.getId() + 1);
+				//astroid.setId(plat.getId() + 1);
 				myPlatforms.set(k, astroid);
 			
 		}
@@ -798,6 +799,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 	public void generateLiveRandomPlatform() {
 		int color = 1;
+		int ast = 1;
+		boolean astCheck = false;
 
 		// processes levels
 		if (score >= 40000) {
@@ -827,7 +830,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		color = (int) (Math.random() * 110) + 1;
-
+		ast = (int) (Math.random() * 500) + 1;
+		
 		// if (level == 0) {
 		// color = 1;
 		// }
@@ -849,13 +853,29 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 //		 color = (int) (Math.random() * 63) + 45;
 //		 }
 //		
-//		 if ((color > 40) && (color <= 50)) {
-//		 Platform plat1 = new Platform(18, xp, yp, 58, 15);
-//		 myPlatforms.add(plat1);
-//		 }
-//		
+		
+		for (int k = 0; k < myPlatforms.size(); k++) {
+			// cycle through platforms and draw
+			Character tempPlatform = (Platform) myPlatforms.get(k);
 
-	
+			// #############################################################
+			// performs action for different platforms
+			// light blue - horizontal scroll
+			if (tempPlatform.getId() == 18) {
+				astCheck = true;
+			}
+
+			
+		}
+		
+		if(!astCheck){
+			if ((color > 40) && (color <= 41)) {
+				Platform plat1 = new Platform(18, xp, yp, 58, 15);
+				myPlatforms.add(plat1);
+				astCheck = false;
+			}
+		}
+
 		// light blue LR
 
 		if ((color > 45) && (color <= 50) && (level >= 0)) {
