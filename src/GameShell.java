@@ -16,6 +16,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	// DOODLE BOUNCE VELOCITY (SMALLER (negative) number for higher jumps)
 
 	public boolean write = false;
+	public boolean extraShot = false;
 
 	private int SDV = -9;
 	// PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
@@ -674,6 +675,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				if ((tempPlatform.getId() == 18)) {
 					updatePlatAst(k, tempPlatform);
 				}
+				
+				//electricity
+				if ((tempPlatform.getId() == 19)) {
+					updatePlatAst(k, tempPlatform);
+				}
+
 
 				// dark blue - vertical scroll
 				if (tempPlatform.getId() == 10) {
@@ -788,7 +795,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		for (int k = 0; k < myPlatforms.size(); k++) {
 			Character str = myPlatforms.get(k);
 
-			if (str.equals(dod)) {
+			if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
 				gameOver = true;
 				gameOn = false;
 			}
@@ -959,14 +966,31 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void checkBulletHit() {
 		try {
 			// checks if each bullet hits a platform
+			int elec = 1;
+			elec = (int) (Math.random() * 110) + 1;
+			
 			for (int a = 0; a < myPlatforms.size(); a++) {
 				if (myPlatforms.size() > 0) {
 					for (int k = 0; k < myBullets.size(); k++) {
 						if (myBullets.get(k).equals(myPlatforms.get(a))) {
-
-							myPlatforms.remove(a);
-							myBullets.remove(k);
-							score = score + 500;
+							if(myPlatforms.get(a).id == 18){
+								
+								Platform reward = new Platform(19, myPlatforms.get(a).getX(), 
+										myPlatforms.get(a).getY(), 58, 15);
+								if((elec > 40) && (elec <= 50)){
+									
+									
+									
+									myPlatforms.add(reward);
+																		
+								}
+								myPlatforms.remove(a);
+							}else if(myPlatforms.get(a).id != 19){
+								myPlatforms.remove(a);
+								myBullets.remove(k);
+								score = score + 500;
+							}
+							
 						}
 					}
 				}
@@ -991,7 +1015,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 						Platform newBrown = (Platform) myPlatforms.get(a);
 						newBrown.setBrownAnimation(true);
 						myPlatforms.set(a, newBrown);
-					} // if doodle hits a spring platform
+					} else if (hitPlat.getId() == 19) {
+						myPlatforms.remove(a);
+						extraShot = true;
+					} 
+					// if doodle hits a spring platform
 					else if (hitPlat.getId() == 14) {
 						Platform launch = (Platform) myPlatforms.get(a);
 						launch.setId(15);
@@ -1436,6 +1464,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 	public void keyPressed(KeyEvent e) {
 
+		int shotTimer = 0;
+		
 		switch (e.getKeyCode()) {
 //		case 32: {
 //			// space key
@@ -1457,8 +1487,25 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 		case KeyEvent.VK_SHIFT: {
 			// shift key
-			acShot.play();
-			createBullet(0, -180);
+			if(extraShot){
+				acShot.play();
+				createAltBullet(0, -180, 9);
+				createAltBullet(0, -180, -9);
+				createAltBullet(0, -180, 18);
+				createAltBullet(0, -180, -18);
+				
+				if(shotTimer >= 400){
+					
+					shotTimer = 0;
+					extraShot = false;
+					
+				}
+				shotTimer++;
+			}else{
+				acShot.play();
+				createBullet(0, -180);
+			}
+			
 			break;
 		}
 
