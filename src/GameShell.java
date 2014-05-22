@@ -200,6 +200,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		myImages.add(greenS1); // 15
 		myImages.add(borderF); // 16
 		myImages.add(expl); // 17
+		myImages.add(reward); //18
 
 		// load images to Media Tracker
 		for (Image i : myImages) {
@@ -309,6 +310,25 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		if (brownPlat.getBrownAnimation() == false) {
 			offScreenBuffer.drawImage(myImages.get(brownPlat.getId()),
 					brownPlat.getX(), brownPlat.getY(), this);
+		}
+	}
+	
+	public void updatePlatAst(int k, Character plat) {
+		// manages astroids, continues the animation by changing images
+		Platform astroid = (Platform) plat;
+
+		if (astroid.getBrownAnimation() == true) {
+			
+				offScreenBuffer.drawImage(myImages.get(astroid.getId()),
+						astroid.getX(), astroid.getY(), this);
+				astroid.setId(plat.getId() + 1);
+				myPlatforms.set(k, astroid);
+			
+		}
+
+		if (astroid.getBrownAnimation() == false) {
+			offScreenBuffer.drawImage(myImages.get(astroid.getId()),
+					astroid.getX(), astroid.getY(), this);
 		}
 	}
 
@@ -648,6 +668,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				if ((tempPlatform.getId() >= 3) && (tempPlatform.getId() <= 9)) {
 					updatePlat3(k, tempPlatform);
 				}
+				
+				//astroid
+				if ((tempPlatform.getId() == 18)) {
+					updatePlatAst(k, tempPlatform);
+				}
 
 				// dark blue - vertical scroll
 				if (tempPlatform.getId() == 10) {
@@ -812,23 +837,23 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		yp = yp * -1;
 
 		// green
-		 if ((color > 0) && (color <= 90)) {
-		 // makes the game harder, less green platforms
-		 if (level == 2) {
-		 color = (int) (Math.random() * 99) + 1;
-		 } else if (level == 3) {
-		 color = (int) (Math.random() * 70) + 30;
-		 } else if (level == 4) {
-		 color = (int) (Math.random() * 63) + 45;
-		 } else if (level == 5) {
-		 color = (int) (Math.random() * 63) + 45;
-		 }
-		
-		 if ((color > 40) && (color <= 43)) {
-		 Platform plat1 = new Platform(9, xp, yp, 58, 15);
-		 myPlatforms.add(plat1);
-		 }
-		 }
+//		 if ((color > 40) && (color <= 50)) {
+//		 // makes the game harder, less green platforms
+//		 if (level == 2) {
+//		 color = (int) (Math.random() * 99) + 1;
+//		 } else if (level == 3) {
+//		 color = (int) (Math.random() * 70) + 30;
+//		 } else if (level == 4) {
+//		 color = (int) (Math.random() * 63) + 45;
+//		 } else if (level == 5) {
+//		 color = (int) (Math.random() * 63) + 45;
+//		 }
+//		
+//		 if ((color > 40) && (color <= 50)) {
+//		 Platform plat1 = new Platform(18, xp, yp, 58, 15);
+//		 myPlatforms.add(plat1);
+//		 }
+//		
 
 	
 		// light blue LR
