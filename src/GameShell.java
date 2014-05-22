@@ -14,7 +14,9 @@ import javax.swing.*;
 public class GameShell extends Applet implements KeyListener, MouseListener, MouseMotionListener, Runnable {
     // #### MASTER SETTINGS #########################
     // DOODLE BOUNCE VELOCITY (SMALLER (negative) number for higher jumps)
-
+	
+	public boolean write = false;
+	
     private int SDV = -9;
     // PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
     private int BSDS = 10;
@@ -63,14 +65,15 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     private boolean gameOn = false;
     private boolean scoresOn = false;
     // AudioClip for midi files
-    private AudioClip ac, acFall;
+    private AudioClip ac, acFall, acShot;
     private Clip clip;
 
     // called by Applet before beginning - 
     // give all attributes starting values here.
     public void init() {
         ac = getAudioClip(getDocumentBase(), "sounds/mystery.wav");
-        acFall = getAudioClip(getDocumentBase(), "sounds/fall.wav");
+        acFall = getAudioClip(getDocumentBase(), "sounds/end.wav");
+        acShot = getAudioClip(getDocumentBase(), "sounds/laser.wav");
 
         score = 0;
 
@@ -99,8 +102,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         intro4 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_menu.png");
         scores0 = Toolkit.getDefaultToolkit().getImage("images/menu/scores0.png");
         scores1 = Toolkit.getDefaultToolkit().getImage("images/menu/scores1.png");
-        gameover0 = Toolkit.getDefaultToolkit().getImage("images/menu/gameover0.png");
-        gameover1 = Toolkit.getDefaultToolkit().getImage("images/menu/gameover1.png");
+        gameover0 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_gameover.png");
+        gameover1 = Toolkit.getDefaultToolkit().getImage("images/menu/invader_gameover_menu.png");
 
         doodleRImg = Toolkit.getDefaultToolkit().getImage("images/Galaga_ship.png");
         doodleLImg = Toolkit.getDefaultToolkit().getImage("images/Galaga_ship.png");
@@ -208,6 +211,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     public void start() {
         gameloop = new Thread(this);
         gameloop.start();
+        
     }
 
     public void run() {
@@ -510,8 +514,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             if (menuHoverOver == 1) {
                 offScreenBuffer.drawImage(intro1, 0, 0, this);
             }
+            if (menuHoverOver == 2) {
+                offScreenBuffer.drawImage(intro2, 0, 0, this);
+            }
             if (menuHoverOver == 3) {
                 offScreenBuffer.drawImage(intro3, 0, 0, this);
+            }
+            if (menuHoverOver == 4) {
+                offScreenBuffer.drawImage(intro4, 0, 0, this);
             }
         }
 
@@ -713,11 +723,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         // processes levels
         if (score >= 40000) {
-            level = 5;
+            level = 1;
         }
 
         if ((score > 30000) && (score <= 40000)) {
-            level = 4;
+            level = 2;
         }
 
         if ((score > 20000) && (score <= 30000)) {
@@ -725,15 +735,15 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         }
 
         if ((score > 10000) && (score <= 20000)) {
-            level = 2;
+            level = 4;
         }
 
         if ((score > 5000) && (score <= 10000)) {
-            level = 1;
+            level = 5;
         }
 
         if (score <= 5000) {
-            level = 1;
+            level = 5;
         }
 
         color = (int) (Math.random() * 110) + 1;
@@ -1172,12 +1182,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             myImages.set(0, doodleSImg);
             if (myBullets.size() < 5) {
                 createBullet(0, -180);
+                acShot.play();
             }
         }
 
         if (menuOn == true) {
-            if ((me.getX() >= 70) && (me.getX() <= 230)) {
-                if ((me.getY() >= 160) && (me.getY() <= 210)) {
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 100) && (me.getY() <= 280)) {
                     menuOn = false;
                     gameOn = true;
                     gameOver = false;
@@ -1208,8 +1219,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         }
 
         if (gameOver == true) {
-            if ((me.getX() >= 68) && (me.getX() <= 225)) {
-                if ((me.getY() >= 155) && (me.getY() <= 208)) {
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 450) && (me.getY() <= 600)) {
                     gameOver = false;
                     menuOn = true;
                     scoresOn = false;
@@ -1238,15 +1249,32 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     // mouse motion listeners
     public void mouseMoved(MouseEvent me) {
         if (menuOn == true) {
-            if ((me.getX() >= 70) && (me.getX() <= 230)) {
-                if ((me.getY() >= 160) && (me.getY() <= 210)) {
+        	
+        	if(write){
+        		System.out.println("X: " + me.getX() + " Y: " + me.getY());
+        	}
+        	
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 100) && (me.getY() <= 260)) {
                     menuHoverOver = 1;
                 }
-            } else if ((me.getX() >= 280) && (me.getX() <= 400)) {
-                if ((me.getY() >= 400) && (me.getY() <= 450)) {
+            } 
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 260) && (me.getY() <= 380)) {
+                    menuHoverOver = 2;
+                }
+            }
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 380) && (me.getY() <= 450)) {
                     menuHoverOver = 3;
                 }
-            } else {
+            }
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 450) && (me.getY() <= 600)) {
+                    menuHoverOver = 4;
+                }
+            }
+            else {
                 menuHoverOver = 0;
             }
         } else if (scoresOn == true) {
@@ -1258,8 +1286,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 scoresHoverOver = 0;
             }
         } else if (gameOver == true) {
-            if ((me.getX() >= 68) && (me.getX() <= 225)) {
-                if ((me.getY() >= 155) && (me.getY() <= 208)) {
+            if ((me.getX() >= 0) && (me.getX() <= 450)) {
+                if ((me.getY() >= 450) && (me.getY() <= 600)) {
                     gameOverHover = 1;
                 }
             } else {
@@ -1292,6 +1320,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
     private int spaceCount;
 
     public void keyPressed(KeyEvent e) {
+    	
         switch (e.getKeyCode()) {
             case 32: {
                 //space key
@@ -1313,12 +1342,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             
             case KeyEvent.VK_SHIFT: {
                 //shift key
+            	acShot.play();
             	createBullet(0, -180);
                 break;
             }
             
             case KeyEvent.VK_Z: {
                 //shift key
+            	acShot.play();
             	createBullet(0, -180);
             	createAltBullet(0, -180, 9);
             	createAltBullet(0, -180, -9);
@@ -1403,7 +1434,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
                 ac.play();
                 break;
             }
-
+            
             case 114: {
                 // F3
                 if (FOREST_MODE == false) {
