@@ -184,24 +184,24 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 
         myPlatforms = new ArrayList<Character>();
         // generates first 12 random platforms
-        for (int i = 0; i < 12; i++) {
-            Platform plat1 = randomPlatform();
-            myPlatforms.add(plat1);
-        }
+//        for (int i = 0; i < 12; i++) {
+//            Platform plat1 = randomPlatform();
+//            myPlatforms.add(plat1);
+//        }
 
         int yp = 500;
         int xp = (int) (Math.random() * 400);
 
-        myPlatforms.add(new Platform(1, xp, 500, 58, 15));
+        //myPlatforms.add(new Platform(1, xp, 500, 58, 15));
     }
 
-    public Platform randomPlatform() {
-        int yp = (int) (Math.random() * 450);
-        int xp = (int) (Math.random() * 400);
-
-        Platform plat1 = new Platform(1, xp, yp, 58, 15);
-        return plat1;
-    }
+//    public Platform randomPlatform() {
+//        int yp = (int) (Math.random() * 450);
+//        int xp = (int) (Math.random() * 400);
+//
+//        Platform plat1 = new Platform(1, xp, yp, 58, 15);
+//        return plat1;
+//    }
 
     public void start() {
         gameloop = new Thread(this);
@@ -691,6 +691,18 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
             }
 
         }
+        
+     // checks if hits a star
+        for (int k = 0; k < myPlatforms.size(); k++) {
+            Character str = myPlatforms.get(k);
+
+                if (str.equals(dod)) {
+                    gameOver = true;
+                    gameOn = false;
+                }
+            
+
+        }
 
     }
 
@@ -719,7 +731,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         }
 
         if (score <= 5000) {
-            level = 0;
+            level = 1;
         }
 
         color = (int) (Math.random() * 110) + 1;
@@ -752,7 +764,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
 //        }
 
         // light blue LR
-        if ((color > 20) && (color <= 80) && (level >= 0)) {
+<<<<<<< HEAD
+        if ((color > 45) && (color <= 50) && (level >= 0)) {
+=======
+        if ((color > 30) && (color <= 60) && (level >= 0)) {
+>>>>>>> 12c8b2bd0e60fcc8cee631393821cc011b150f49
             Platform plat2 = new Platform(2, xp, yp, 56, 16);
             myPlatforms.add(plat2);
         }
@@ -1032,10 +1048,10 @@ public class GameShell extends Applet implements KeyListener, MouseListener, Mou
         spaceCount = 0;
         fCount = 0;
 
-        for (int i = 0; i < 12; i++) {
-            Platform plat1 = randomPlatform();
-            myPlatforms.add(plat1);
-        }
+//        for (int i = 0; i < 12; i++) {
+//            Platform plat1 = randomPlatform();
+//            myPlatforms.add(plat1);
+//        }
 
         int yp = 500;
         int xp = (int) (Math.random() * 400);
