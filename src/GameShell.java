@@ -813,6 +813,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
 				gameOver = true;
 				gameOn = false;
+			}else if(str.equals(dod) && myPlatforms.get(k).getId() == 19){
+				myPlatforms.remove(k);
+				extraShot = true;
 			}
 
 		}
@@ -1031,11 +1034,10 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 						Platform newBrown = (Platform) myPlatforms.get(a);
 						newBrown.setBrownAnimation(true);
 						myPlatforms.set(a, newBrown);
-					} else if (hitPlat.getId() == 19) {
+					}else if (hitPlat.getId() == 19) {
 						myPlatforms.remove(a);
 						extraShot = true;
-					} // if doodle hits a spring platform
-					else if (hitPlat.getId() == 14) {
+					}else if (hitPlat.getId() == 14) {
 						Platform launch = (Platform) myPlatforms.get(a);
 						launch.setId(15);
 						myPlatforms.set(a, launch);
