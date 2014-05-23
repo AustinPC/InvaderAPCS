@@ -17,6 +17,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 	public boolean write = false;
 	public boolean extraShot = false;
+	public boolean first = true;
 
 	private int SDV = -9;
 	// PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
@@ -73,6 +74,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	// called by Applet before beginning -
 	// give all attributes starting values here.
 	public void init() {
+		
+		
 		ac = getAudioClip(getDocumentBase(), "sounds/mystery.wav");
 		acFall = getAudioClip(getDocumentBase(), "sounds/end.wav");
 		acShot = getAudioClip(getDocumentBase(), "sounds/laser.wav");
@@ -575,6 +578,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			// plays "fall" sound effect - game over
 			acFall.play();
 			fCount = 1;
+			first = true;
 		}
 
 		// if on main menu
@@ -637,6 +641,10 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 
 			Doodle tempDoodle = (Doodle) myGuys.get(0);
+//			if(first){
+//				tempDoodle.changeY(400);
+//				first = false;
+//			}
 
 			if (springCount < 1) {
 				SDV = -9;
@@ -686,7 +694,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				if (tempPlatform.getId() == 10) {
 					updatePlat10(k, tempPlatform);
 				} // if its a normal platform
-				else {
+				else if(level != 0){
 					offScreenBuffer.drawImage(
 							myImages.get(tempPlatform.getId()),
 							tempPlatform.getX(), tempPlatform.getY(), this);
@@ -741,9 +749,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 
 			// draw doodle, last character
-			offScreenBuffer.drawImage(myImages.get(tempDoodle.show()),
-					tempDoodle.getX(), tempDoodle.getY(), this);
-			tempDoodle.move();
+			if(first){
+				offScreenBuffer.drawImage(myImages.get(tempDoodle.show()),
+						tempDoodle.getX(), tempDoodle.getY() - 100, this);
+				tempDoodle.move();
+				first = false;
+			}else{
+				offScreenBuffer.drawImage(myImages.get(tempDoodle.show()),
+						tempDoodle.getX(), tempDoodle.getY(), this);
+				tempDoodle.move();
+			}
 			if ((shiftDown == true) && (samePlatform == false)) {
 				tempDoodle.changeY(DSDS + 2);
 				creationCounter++;
@@ -833,7 +848,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 		if (score <= 5000) {
 
-			level = 5;
+			level = 0;
 		}
 
 		color = (int) (Math.random() * 110) + 1;
@@ -876,7 +891,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 		
 		if(!astCheck){
-			if ((color > 40) && (color <= 41)) {
+			if ((color > 40) && (color <= 50)) {
 				Platform plat1 = new Platform(18, xp, yp, 58, 15);
 				myPlatforms.add(plat1);
 				astCheck = false;
@@ -884,20 +899,21 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		// light blue LR
-
-		if ((color > 45) && (color <= 50) && (level >= 0)) {
-
-			Platform plat2 = new Platform(2, xp, yp, 56, 16);
-
-			myPlatforms.add(plat2);
-
-		}
-
-		if ((color > 50) && (color <= 60) && (level < 2)) {
-
-			color = 62;
-
-		}
+		//if(level != 0){
+			if ((color > 45) && (color <= 50) && (level >= 0)) {
+	
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+	
+				myPlatforms.add(plat2);
+	
+			}
+	
+			if ((color > 50) && (color <= 60) && (level < 2)) {
+	
+				color = 62;
+	
+			}
+		//}
 
 		// brown
 		// if ((color > 60) && (color <= 70)) {
@@ -1018,8 +1034,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 					} else if (hitPlat.getId() == 19) {
 						myPlatforms.remove(a);
 						extraShot = true;
-					} 
-					// if doodle hits a spring platform
+					} // if doodle hits a spring platform
 					else if (hitPlat.getId() == 14) {
 						Platform launch = (Platform) myPlatforms.get(a);
 						launch.setId(15);
