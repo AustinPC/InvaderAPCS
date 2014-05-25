@@ -120,11 +120,11 @@ public class Doodle extends Character {
 	}
 
 	public void checkLRBounds() {
-		if (getX() > 445)
-			setX(-60);
+		if (getX() > 400)
+			setX(400);
 
-		if (getX() < -60)
-			setX(445);
+		if (getX() < -15)
+			setX(-15);
 
 		if (getY() < 10)
 			setY(10);
