@@ -17,9 +17,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 	public boolean write = false;
 	public boolean extraShot = false;
+	public boolean shield = false;
+	public boolean slowDown = false;
 	public boolean first = true;
 	
+	private int eCount = 0;
 	private int sCount = 0;
+	private int dCount = 0;
 
 	private int SDV = -9;
 	// PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
@@ -43,7 +47,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	private MediaTracker mt;
 	private Image gridImg, topbar, bulletImg;
 	private Image doodleRImg, doodleLImg, doodleSImg;
-	private Image starB, starW, whiteP, astr, greenS0, greenS1, expl, reward1, reward2;
+	private Image starB, starW, whiteP, astr, greenS0, greenS1, expl, reward1, reward2, reward3;
 	private Image brownP1, brownP2, brownP3, brownP4, brownP5, brownP6;
 	private Image batM1, batM2, batM3;
 	private Image intro0, intro2, intro1, intro3, intro4, scores0, scores1,
@@ -77,7 +81,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	// give all attributes starting values here.
 	public void init() {
 		
+		eCount = 0;
 		sCount = 0;
+		dCount = 0;
 		
 		ac = getAudioClip(getDocumentBase(), "sounds/mystery.wav");
 		acFall = getAudioClip(getDocumentBase(), "sounds/end.wav");
@@ -145,6 +151,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		astr = Toolkit.getDefaultToolkit().getImage("images/asteroid.png");
 		reward1 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
 		reward2 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
+		reward3 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
 
 		// brown block animation
 		brownP1 = Toolkit.getDefaultToolkit().getImage(
@@ -211,6 +218,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		myImages.add(astr); // 18
 		myImages.add(reward1); // 19
 		myImages.add(reward2); // 20
+		myImages.add(reward3); // 21
 		
 
 		// load images to Media Tracker
@@ -588,12 +596,33 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			first = true;
 		}
 		
+		//Checking the different reward counts
 		if(extraShot){
-			if(sCount <= 300){
+			if(eCount <= 300){
+				eCount++;
+			}else{
+				eCount = 0;
+				extraShot = false;
+			}
+		}
+		
+		if(shield){
+			if(sCount <= 150){
 				sCount++;
 			}else{
 				sCount = 0;
-				extraShot = false;
+				shield = false;
+			}
+		}
+		
+		if(slowDown){
+			if(dCount <= 150){
+				BSDS = 1;
+				dCount++;
+			}else{
+				BSDS = 3;
+				dCount = 0;
+				slowDown = false;
 			}
 		}
 
@@ -830,14 +859,20 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		for (int k = 0; k < myPlatforms.size(); k++) {
 			Character str = myPlatforms.get(k);
 
-			if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
-				gameOver = true;
-				gameOn = false;
-				//calculateScore();
-				//drawScores();
-			}else if(str.equals(dod) && myPlatforms.get(k).getId() == 19){
+			if(str.equals(dod) && myPlatforms.get(k).getId() == 19){
 				myPlatforms.remove(k);
 				extraShot = true;
+			}else if (str.equals(dod) && myPlatforms.get(k).getId() == 20) {
+				myPlatforms.remove(k);
+				shield = true;
+			}else if (str.equals(dod) && myPlatforms.get(k).getId() == 21) {
+				myPlatforms.remove(k);
+				slowDown = true;
+			}else if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
+				if(!shield){
+					gameOver = true;
+					gameOn = false;
+				}
 			}
 
 		}
@@ -1051,19 +1086,31 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 							if(myPlatforms.get(a).id == 18){
 								
 								
-								if((elec > 40) && (elec <= 45)){
+								if((elec > 40) && (elec <= 44)){
 									Platform reward = new Platform(19, myPlatforms.get(a).getX(), 
 											myPlatforms.get(a).getY(), 58, 15);
+									
 									myPlatforms.add(reward);
-																		
-								}else if((elec > 45) && (elec <= 50)){
+																	
+								}else if((elec > 44) && (elec <= 48)){
 									Platform reward = new Platform(20, myPlatforms.get(a).getX(), 
 											myPlatforms.get(a).getY(), 58, 15);
+									
+									myPlatforms.add(reward);
+									
+								}else if((elec > 48) && (elec <= 52)){
+									Platform reward = new Platform(21, myPlatforms.get(a).getX(), 
+											myPlatforms.get(a).getY(), 58, 15);
+									
 									myPlatforms.add(reward);
 									
 								}
+								
+								myBullets.remove(k);
 								myPlatforms.remove(a);
-							}else if(myPlatforms.get(a).id != 19){
+								
+							}else if((myPlatforms.get(a).id != 19) &&
+									myPlatforms.get(a).id != 20 && myPlatforms.get(a).id != 21){
 								myPlatforms.remove(a);
 								myBullets.remove(k);
 								score = score + 500;
@@ -1096,7 +1143,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 					}else if (hitPlat.getId() == 19) {
 						myPlatforms.remove(a);
 						extraShot = true;
+						eCount = 0;
+					}else if (hitPlat.getId() == 20) {
+						myPlatforms.remove(a);
+						shield = true;
 						sCount = 0;
+					}
+					else if (hitPlat.getId() == 20) {
+						myPlatforms.remove(a);
+						slowDown = true;
+						dCount = 0;
 					}else if (hitPlat.getId() == 14) {
 						Platform launch = (Platform) myPlatforms.get(a);
 						launch.setId(15);
