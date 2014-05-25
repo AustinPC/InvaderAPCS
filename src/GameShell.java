@@ -21,6 +21,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public boolean slowDown = false;
 	public boolean first = true;
 	
+	public boolean testMode = false;
+	
 	private int eCount = 0;
 	private int sCount = 0;
 	private int dCount = 0;
@@ -150,8 +152,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		whiteP = Toolkit.getDefaultToolkit().getImage("images/p-white.png");
 		astr = Toolkit.getDefaultToolkit().getImage("images/asteroid.png");
 		reward1 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
-		reward2 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
-		reward3 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
+		reward2 = Toolkit.getDefaultToolkit().getImage("images/heart.png");
+		reward3 = Toolkit.getDefaultToolkit().getImage("images/clock.png");
 
 		// brown block animation
 		brownP1 = Toolkit.getDefaultToolkit().getImage(
@@ -607,7 +609,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 		
 		if(shield){
-			if(sCount <= 150){
+			if(sCount <= 300){
 				sCount++;
 			}else{
 				sCount = 0;
@@ -616,7 +618,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 		
 		if(slowDown){
-			if(dCount <= 150){
+			if(dCount <= 250){
 				BSDS = 1;
 				dCount++;
 			}else{
@@ -869,7 +871,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				myPlatforms.remove(k);
 				slowDown = true;
 			}else if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
-				if(!shield){
+				if(!shield && !testMode){
 					gameOver = true;
 					gameOn = false;
 				}
@@ -1086,19 +1088,19 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 							if(myPlatforms.get(a).id == 18){
 								
 								
-								if((elec > 40) && (elec <= 44)){
+								if((elec > 40) && (elec <= 45)){
 									Platform reward = new Platform(19, myPlatforms.get(a).getX(), 
 											myPlatforms.get(a).getY(), 58, 15);
 									
 									myPlatforms.add(reward);
 																	
-								}else if((elec > 44) && (elec <= 48)){
+								}else if((elec > 46) && (elec <= 54)){
 									Platform reward = new Platform(20, myPlatforms.get(a).getX(), 
 											myPlatforms.get(a).getY(), 58, 15);
 									
 									myPlatforms.add(reward);
 									
-								}else if((elec > 48) && (elec <= 52)){
+								}else if((elec > 50) && (elec <= 58)){
 									Platform reward = new Platform(21, myPlatforms.get(a).getX(), 
 											myPlatforms.get(a).getY(), 58, 15);
 									
@@ -1613,6 +1615,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		case 49: {
 			// 1 key
 			score = 5000;
+			break;
+		}
+		
+		case KeyEvent.VK_T: {
+			// T key
+			if(testMode){
+				testMode = false;
+			}else{
+				testMode = true;
+			}
 			break;
 		}
 
