@@ -1722,9 +1722,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Controls\n+ Arrow keys to move\n+ F2 to toggle music\n+ F3 to toggle JUNGLE MODE\n+ ESC to return to menu\n+ Click to shoot\n+ Press SPACE to start jumping\n\n"
-										+ "Hints\n+ Don't fall off the screen or hit a monster\n+ You can jump off the side of the\n    screen and appear on the other side\n+ You can bounce on top of monsters\n+ Springs make you jump really high\n+ Try to get the highest score\n\n",
-								"Doodle Jump", JOptionPane.INFORMATION_MESSAGE);
+								"Controls\n+ Arrow keys to move\n+ F2 to toggle music\n+ ESC to return to menu\n+ Press shift to shoot\n"
+										+ "+ Hints\n+ Don't touch the bottom of the screen or hit a black hole\n + Try to get the highest score\n\n",
+								"Invader", JOptionPane.INFORMATION_MESSAGE);
 			}
 			break;
 		}
