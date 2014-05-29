@@ -20,6 +20,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public boolean shield = false;
 	public boolean slowDown = false;
 	public boolean first = true;
+	public boolean explTimer = false;
 	
 	public boolean testMode = false;
 	
@@ -353,39 +354,46 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 	}
 
-	public void updatePlat10(int k, Character plat) {
+	public void updateStarAnm(int k, Character plat) {
 		// manages vertical moving platforms
-		Platform tempPlat10 = (Platform) plat;
+		Platform tempStar = (Platform) plat;
 
-		int tempy1 = tempPlat10.getY();
-		int tempv = tempPlat10.getVV();
-		int vcount = tempPlat10.getVcount();
+		int tempy1 = tempStar.getY();
+		int tempv = tempStar.getVV();
+		int vcount = tempStar.getVcount();
 
 		if (tempv == -1) {
 			if (vcount >= 100) {
-				tempPlat10.setVV(1);
+				tempStar.setVV(1);
 			}
 
 			if (vcount < 100) {
-				tempPlat10.changeY(tempv);
-				tempPlat10.setVcount(tempPlat10.getVcount() + 1);
+				tempStar.changeY(tempv);
+				tempStar.setVcount(tempStar.getVcount() + 1);
 			}
 		}
 
 		if (tempv == 1) {
 			if (vcount <= -100) {
-				tempPlat10.setVV(-1);
+				tempStar.setVV(-1);
 			}
 
 			if (vcount > -100) {
-				tempPlat10.changeY(tempv);
-				tempPlat10.setVcount(tempPlat10.getVcount() - 1);
+				tempStar.changeY(tempv);
+				tempStar.setVcount(tempStar.getVcount() - 1);
 			}
 		}
-
-		myPlatforms.set(k, tempPlat10);
-		offScreenBuffer.drawImage(myImages.get(tempPlat10.getId()),
-				tempPlat10.getX(), tempPlat10.getY(), this);
+		
+		//if(tempStar.getBrownAnimation()){
+			myPlatforms.set(k, tempStar);
+			offScreenBuffer.drawImage(myImages.get(17),
+					tempStar.getX(), tempStar.getY(), this);
+		//}else{
+//			myPlatforms.set(k, tempStar);
+//			offScreenBuffer.drawImage(myImages.get(tempStar.getId()),
+//					tempStar.getX(), tempStar.getY(), this);
+		//}
+			
 	}
 
 	public void updateMonster(int w, Character mon) {
@@ -588,6 +596,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	private int fCount = 0;
+	private int explCount = 0;
 
 	// one step of game - draw to buffer and displays all at the end
 	public void update(Graphics g) {
@@ -598,8 +607,17 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			first = true;
 		}
 		
+		if(!explTimer){
+			if(explCount <= 50){
+				explCount++;
+			}else{
+				explCount = 0;
+				explTimer = true;
+			}
+		}
+		
 		//Checking the different reward counts
-		if(extraShot){
+		if(!extraShot){
 			if(eCount <= 300){
 				eCount++;
 			}else{
@@ -718,12 +736,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				// performs action for different platforms
 				// light blue - horizontal scroll
 				if (tempPlatform.getId() == 2) {
-					updatePlat2(k, tempPlatform);
+					updateStarAnm(k, tempPlatform);
 				}
 
 				// brown
 				if ((tempPlatform.getId() >= 3) && (tempPlatform.getId() <= 9)) {
-					updatePlat3(k, tempPlatform);
+					updateStarAnm(k, tempPlatform);
 				}
 				
 				//astroid
@@ -739,7 +757,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 				// dark blue - vertical scroll
 				if (tempPlatform.getId() == 10) {
-					updatePlat10(k, tempPlatform);
+					updateStarAnm(k, tempPlatform);
 				} // if its a normal platform
 				else if(level != 0){
 					offScreenBuffer.drawImage(
@@ -1113,8 +1131,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 								
 							}else if((myPlatforms.get(a).id != 19) &&
 									myPlatforms.get(a).id != 20 && myPlatforms.get(a).id != 21){
-								myPlatforms.remove(a);
+								Platform newStar = (Platform) myPlatforms.get(a);
+								newStar.setBrownAnimation(true);
 								myBullets.remove(k);
+								if(explTimer){
+									myPlatforms.remove(a);
+									explTimer = false;
+								}
 								score = score + 500;
 							}
 							

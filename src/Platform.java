@@ -6,7 +6,7 @@ public class Platform extends Character
 {
    private int stepy;
    private int id,hv,vv,vcount;
-   private boolean brownAnimation=false;
+   public boolean brownAnimation=false;
 	
 	// default constructor, sets all to zero
 	public Platform(int id, int x, int y, int w, int h)
