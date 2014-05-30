@@ -386,7 +386,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		
 		//if(tempStar.getBrownAnimation()){
 			myPlatforms.set(k, tempStar);
-			offScreenBuffer.drawImage(myImages.get(17),
+			offScreenBuffer.drawImage(myImages.get(tempStar.getId()),
 					tempStar.getX(), tempStar.getY(), this);
 		//}else{
 //			myPlatforms.set(k, tempStar);
@@ -607,15 +607,6 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			first = true;
 		}
 		
-		if(!explTimer){
-			if(explCount <= 50){
-				explCount++;
-			}else{
-				explCount = 0;
-				explTimer = true;
-			}
-		}
-		
 		//Checking the different reward counts
 		if(!extraShot){
 			if(eCount <= 300){
@@ -774,6 +765,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				// if platform moves off bottom of screen, create new platform
 				if (tempPlatform.getY() > 400) {
 					// interval for every Y to create new platform
+					
 					if (creationCounter > ((int) (Math.random() * 7) + 5)) {
 						generateLiveRandomPlatform();
 						creationCounter = 0;
@@ -1131,13 +1123,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 								
 							}else if((myPlatforms.get(a).id != 19) &&
 									myPlatforms.get(a).id != 20 && myPlatforms.get(a).id != 21){
-								Platform newStar = (Platform) myPlatforms.get(a);
-								newStar.setBrownAnimation(true);
+								
 								myBullets.remove(k);
-								if(explTimer){
-									myPlatforms.remove(a);
-									explTimer = false;
-								}
+								
+								myPlatforms.remove(a);
+									
+							
 								score = score + 500;
 							}
 							
