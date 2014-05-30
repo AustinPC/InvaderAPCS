@@ -1,8 +1,10 @@
-= Invader
-Austin Coleman, Austin Kukay, Jakob Sheehan May 2014
+= Doodle Jump
+Albert Haque, July 2012
 
 == Overview
-A space invader game written for the PC. Written in Java.
+The popular iPhone game, Doodle Jump, ported to PC. Written in Java.
 
 == Screenshots
-http://s7.postimg.org/hhxxuzo6z/invader_main.png
+http://s10.postimage.org/3y9ibw5sp/afsfa.png
+http://s10.postimage.org/5pawwcgux/doodle.png
+http://s12.postimage.org/f6xw4r8cd/afssfafdssf.png
