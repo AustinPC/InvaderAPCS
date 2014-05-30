@@ -608,7 +608,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 		
 		//Checking the different reward counts
-		if(!extraShot){
+		if(extraShot){
 			if(eCount <= 300){
 				eCount++;
 			}else{
@@ -727,12 +727,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				// performs action for different platforms
 				// light blue - horizontal scroll
 				if (tempPlatform.getId() == 2) {
-					updateStarAnm(k, tempPlatform);
+					updatePlat2(k, tempPlatform);
 				}
 
 				// brown
 				if ((tempPlatform.getId() >= 3) && (tempPlatform.getId() <= 9)) {
-					updateStarAnm(k, tempPlatform);
+					updatePlat2(k, tempPlatform);
 				}
 				
 				//astroid
@@ -748,7 +748,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 				// dark blue - vertical scroll
 				if (tempPlatform.getId() == 10) {
-					updateStarAnm(k, tempPlatform);
+					updatePlat2(k, tempPlatform);
 				} // if its a normal platform
 				else if(level != 0){
 					offScreenBuffer.drawImage(
@@ -894,11 +894,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void generateLiveRandomPlatform() {
 		int color = 1;
 		int ast = 1;
+		int bound = (score/10000) + 48;
+		int levelTracker = (score/10000) + 1;
 		boolean astCheck = false;
 
 		// processes levels
 		if (score >= 40000) {
-			level = 5;
+			level = levelTracker;
 		}
 
 		if ((score > 30000) && (score <= 40000)) {
@@ -1010,6 +1012,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 						Platform plat2 = new Platform(2, xp, yp, 56, 16);
 			
 						myPlatforms.add(plat2);
+					}
+				} else if (level >= 6){
+					if ((color > 45) && (color <= bound)) {
+						
+						Platform plat2 = new Platform(2, xp, yp, 56, 16);
+			
+						myPlatforms.add(plat2);
+						
 					}
 				}
 			
@@ -1640,6 +1650,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				testMode = true;
 			}
 			break;
+		}
+		
+		case KeyEvent.VK_Y: {
+			// Y key
+			score += 200;
 		}
 
 		case KeyEvent.VK_SHIFT: {
