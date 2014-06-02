@@ -139,11 +139,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				"images/Galaga_ship.png");
 
 		batM1 = Toolkit.getDefaultToolkit()
-				.getImage("images/monsters/bat1.png");
+				.getImage("images/monsters/black_hole.png");
 		batM2 = Toolkit.getDefaultToolkit()
-				.getImage("images/monsters/bat2.png");
+				.getImage("images/monsters/black_hole.png");
 		batM3 = Toolkit.getDefaultToolkit()
-				.getImage("images/monsters/bat3.png");
+				.getImage("images/monsters/black_hole.png");
 
 		greenS0 = Toolkit.getDefaultToolkit().getImage("images/p-green-s1.png");
 		greenS1 = Toolkit.getDefaultToolkit().getImage("images/p-green-s0.png");
@@ -422,50 +422,50 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		// VERTICAL MOVEMENT
-		if (tempv == -1) {
-			if (vcount >= 25) {
-				tempMonster.setVV(1);
-			}
+//		if (tempv == -1) {
+//			if (vcount >= 25) {
+//				tempMonster.setVV(1);
+//			}
+//
+//			if (vcount < 25) {
+//				tempMonster.changeY(tempv);
+//				tempMonster.setVcount(tempMonster.getVcount() + 1);
+//			}
+//		}
+//
+//		if (tempv == 1) {
+//			if (vcount <= -25) {
+//				tempMonster.setVV(-1);
+//			}
+//
+//			if (vcount > -25) {
+//				tempMonster.changeY(tempv);
+//				tempMonster.setVcount(tempMonster.getVcount() - 1);
+//			}
+//		}
 
-			if (vcount < 25) {
-				tempMonster.changeY(tempv);
-				tempMonster.setVcount(tempMonster.getVcount() + 1);
-			}
-		}
-
-		if (tempv == 1) {
-			if (vcount <= -25) {
-				tempMonster.setVV(-1);
-			}
-
-			if (vcount > -25) {
-				tempMonster.changeY(tempv);
-				tempMonster.setVcount(tempMonster.getVcount() - 1);
-			}
-		}
-
-		// HORIZONTAL MOVEMENT
-		if (temph == -1) {
-			if (hcount >= 60) {
-				tempMonster.setHV(1);
-			}
-
-			if (hcount < 60) {
-				tempMonster.changeX(temph);
-				tempMonster.setHcount(tempMonster.getHcount() + 1);
-			}
-		}
-
-		if (temph == 1) {
-			if (hcount <= -60) {
-				tempMonster.setHV(-1);
-			}
-
-			if (hcount > -60) {
-				tempMonster.changeX(temph);
-				tempMonster.setHcount(tempMonster.getHcount() - 1);
-			}
-		}
+//		// HORIZONTAL MOVEMENT
+//		if (temph == -1) {
+//			if (hcount >= 60) {
+//				tempMonster.setHV(1);
+//			}
+//
+//			if (hcount < 60) {
+//				tempMonster.changeX(temph);
+//				tempMonster.setHcount(tempMonster.getHcount() + 1);
+//			}
+//		}
+//
+//		if (temph == 1) {
+//			if (hcount <= -60) {
+//				tempMonster.setHV(-1);
+//			}
+//
+//			if (hcount > -60) {
+//				tempMonster.changeX(temph);
+//				tempMonster.setHcount(tempMonster.getHcount() - 1);
+//			}
+//		}
 
 		if ((shiftDown == true) && (samePlatform == false)) {
 			tempMonster.changeY(BSDS);
@@ -781,6 +781,10 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			if (myPlatforms.size() < 13) {
 				generateLiveRandomPlatform();
 			}
+			
+			if (myMonsters.size() < 1){
+				generateMonster();
+			}
 
 			for (int w = 0; w < myMonsters.size(); w++) {
 				updateMonster(w, myMonsters.get(w));
@@ -856,7 +860,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		for (int k = 0; k < myMonsters.size(); k++) {
 			Character mon = myMonsters.get(k);
 
-			if (dod.getVelocity() < 0) {
+			if ((dod.getVelocity() >= 0) || (dod.getVelocity() < 0)) {
 				if (mon.equals(dod)) {
 					gameOver = true;
 					gameOn = false;
@@ -887,6 +891,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				}
 			}
 
+		}
+		
+		for (int k = 0; k < myPlatforms.size(); k++) {
+			for (int r = 0; r < myMonsters.size(); r++) {
+				if(myPlatforms.get(k).equals(myMonsters.get(r))){
+					myPlatforms.remove(k);
+				}
+			}
 		}
 
 	}
@@ -1143,6 +1155,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 							}
 							
 						}
+						else if (myBullets.get(k).equals(myMonsters.get(a))) {
+							
+							myBullets.remove(k);
+							
+						}
 					}
 				}
 			}
@@ -1214,6 +1231,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 						lastHitPlatform = (Platform) myPlatforms.get(a);
 					}
 
+				} else if (doodle1.checkHitPlatform(myBullets.get(a))){
+					gameOver = true;
+					gameOn = false;
 				}
 			}
 		}
