@@ -335,6 +335,30 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 	}
 	
+	public void updateGravity(Character ch, Character mon) {
+		// manages gravity from black holes
+		Character character = ch;
+		Monster black = (Monster) mon;
+		
+		int chX = ch.getX();
+		int chY = ch.getY();
+
+		int monX = mon.getX();
+		int monY = mon.getY();
+		
+		if (chX < monX) {
+			ch.changeX(1);
+		}else{
+			ch.changeX(-1);
+		}
+		
+		if (chY < monY) {
+			ch.changeY(1);
+		}else{
+			ch.changeY(-1);
+		}
+	}
+	
 	public void updatePlatAst(int k, Character plat) {
 		// manages astroids, continues the animation by changing images
 		Platform astroid = (Platform) plat;
@@ -841,6 +865,18 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			checkPlatformHit();
 			checkBulletHit();
 			checkDoodleGameOver();
+			
+			for (int k = 0; k < myPlatforms.size(); k++) {
+				for (int r = 0; r < myMonsters.size(); r++) {
+					updateGravity(myPlatforms.get(k), myMonsters.get(r));
+				}
+			}
+			
+			for (int k = 0; k < myGuys.size(); k++) {
+				for (int r = 0; r < myMonsters.size(); r++) {
+					updateGravity(myGuys.get(k), myMonsters.get(r));
+				}
+			}
 
 		}
 		g.drawImage(offScreenImage, 0, 0, this);
@@ -900,6 +936,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				}
 			}
 		}
+		
+		
 
 	}
 
