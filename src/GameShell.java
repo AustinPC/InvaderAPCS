@@ -204,13 +204,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		myImages.add(doodleRImg);// 0
 		myImages.add(starB); // 1
 		myImages.add(starW); // 2
-/*		myImages.add(brownP1); // 3
+		myImages.add(brownP1); // 3
 		myImages.add(brownP2); // 4
 		myImages.add(brownP3); // 5
 		myImages.add(brownP4); // 6
 		myImages.add(brownP5); // 7
 		myImages.add(brownP6); // 8
-*/		myImages.add(whiteP); // 9
+		myImages.add(whiteP); // 9
 		myImages.add(astr); // 10
 		myImages.add(batM1); // 11
 		myImages.add(batM2); // 12
@@ -256,6 +256,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		int xp = (int) (Math.random() * 400);
 
 		// myPlatforms.add(new Platform(1, xp, 500, 58, 15));
+		
+		
 	}
 
 	// public Platform randomPlatform() {
