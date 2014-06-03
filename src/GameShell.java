@@ -346,16 +346,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		int monX = mon.getX();
 		int monY = mon.getY();
 		
-		if (chX < monX) {
-			ch.changeX(1);
+		if (chX <= monX) {
+			ch.changeX(2);
 		}else{
-			ch.changeX(-1);
+			ch.changeX(-2);
 		}
 		
-		if (chY < monY) {
-			ch.changeY(1);
+		if (chY <= monY) {
+			ch.changeY(2);
 		}else{
-			ch.changeY(-1);
+			ch.changeY(-2);
 		}
 	}
 	
@@ -515,11 +515,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				int num = Integer.parseInt(br.readLine());
 				Person per = new Person(s, num);
 				people.add(per);
+				System.out.print("People#: " + people.size());
 			}
 			fr.close();
 		} catch (IOException e) {
 		}
 
+		System.out.print("People#: " + people.size());
 		// sort scores
 
 		ArrayList sorted = new ArrayList<Person>();
@@ -566,6 +568,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void calculateScore() {
+		
 		readScores();
 
 		if (score > people.get(5).getScore()) {
@@ -806,8 +809,15 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				generateLiveRandomPlatform();
 			}
 			
-			if (myMonsters.size() < 1){
-				generateMonster();
+			int blck = (int) (Math.random() * 500) + 1;
+			int blck2 = (int) (Math.random() * 500) + 1;
+			
+			if((blck >= 40) && (blck < 41)){
+				//if((blck >= 50) && (blck < 55)){
+					if (myMonsters.size() < 1){
+						generateMonster();
+					}
+				//}
 			}
 
 			for (int w = 0; w < myMonsters.size(); w++) {
@@ -877,6 +887,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 					updateGravity(myGuys.get(k), myMonsters.get(r));
 				}
 			}
+			
+			for (int k = 0; k < myBullets.size(); k++) {
+				for (int r = 0; r < myMonsters.size(); r++) {
+					updateGravity(myBullets.get(k), myMonsters.get(r));
+				}
+			}
 
 		}
 		g.drawImage(offScreenImage, 0, 0, this);
@@ -937,10 +953,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 		}
 		
-		
-
 	}
-
 	public void generateLiveRandomPlatform() {
 		int color = 1;
 		int ast = 1;
@@ -951,23 +964,32 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		// processes levels
 		if (score >= 40000) {
 			level = levelTracker;
+			gridImg = Toolkit.getDefaultToolkit().getImage(
+					"images/space_bckgrd5.jpg");
 		}
 
 		if ((score > 30000) && (score <= 40000)) {
 			level = 4;
+			gridImg = Toolkit.getDefaultToolkit().getImage(
+					"images/space_bckgrd4.png");
 		}
 
 		if ((score > 20000) && (score <= 30000)) {
 			level = 3;
+			gridImg = Toolkit.getDefaultToolkit().getImage(
+					"images/space_bckgrd3.jpg");
 		}
 
 		if ((score > 10000) && (score <= 20000)) {
 			level = 2;
+			gridImg = Toolkit.getDefaultToolkit().getImage(
+					"images/space_bckgrd2.png");
 		}
 
 		if ((score > 200) && (score <= 10000)) {
-
 			level = 1;
+			gridImg = Toolkit.getDefaultToolkit().getImage(
+					"images/space_bckgrd1.png");
 		}
 
 		if (score <= 200) {
@@ -1186,16 +1208,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 								
 								myBullets.remove(k);
 								
-								myPlatforms.remove(a);
-									
-							
+								if((myPlatforms.get(a).id != 11) &&
+									myPlatforms.get(a).id != 12 && myPlatforms.get(a).id != 13){
+									myPlatforms.remove(a);
+								}
+								
 								score = score + 500;
 							}
-							
-						}
-						else if (myBullets.get(k).equals(myMonsters.get(a))) {
-							
-							myBullets.remove(k);
 							
 						}
 					}
