@@ -508,6 +508,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		people = new ArrayList<Person>();
 
 		try {
+			
 			FileReader fr = new FileReader("scores.txt");
 			BufferedReader br = new BufferedReader(fr);
 			String s;
@@ -515,13 +516,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				int num = Integer.parseInt(br.readLine());
 				Person per = new Person(s, num);
 				people.add(per);
-				System.out.print("People#: " + people.size());
+				//System.out.print("People#: " + people.size());
 			}
 			fr.close();
 		} catch (IOException e) {
 		}
 
-		System.out.print("People#: " + people.size());
+		//System.out.print("People#: " + people.size());
 		// sort scores
 
 		ArrayList sorted = new ArrayList<Person>();
@@ -532,6 +533,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		while (people.size() > 0) {
 			int lowidx = 0;
 			highest = people.get(0);
+			System.out.print(people.get(0));
 
 			for (int i = 1; i < people.size(); i++) {
 				current = people.get(i);
@@ -617,6 +619,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 			// keep array size at 6
 			people.remove(6);
+			//drawScores();
 
 		}
 
