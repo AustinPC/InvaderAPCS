@@ -156,6 +156,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		reward3 = Toolkit.getDefaultToolkit().getImage("images/clock.png");
 
 		// brown block animation
+/*
 		brownP1 = Toolkit.getDefaultToolkit().getImage(
 				"images/brown/p-brown-1.png");
 		brownP2 = Toolkit.getDefaultToolkit().getImage(
@@ -168,6 +169,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				"images/brown/p-brown-5.png");
 		brownP6 = Toolkit.getDefaultToolkit().getImage(
 				"images/brown/p-brown-6.png");
+*/
 
 		gridF = Toolkit.getDefaultToolkit().getImage(
 				"images/forest/gridbg-f.png");
@@ -183,7 +185,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				"images/forest/greenS0F.png");
 		greenS1F = Toolkit.getDefaultToolkit().getImage(
 				"images/forest/greenS1F.png");
-
+/*
 		brownF1 = Toolkit.getDefaultToolkit().getImage(
 				"images/forest/brownF1.png");
 		brownF2 = Toolkit.getDefaultToolkit().getImage(
@@ -196,19 +198,19 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				"images/forest/brownF5.png");
 		brownF6 = Toolkit.getDefaultToolkit().getImage(
 				"images/forest/brownF6.png");
-
+*/
 		myImages = new ArrayList();
 		// add all images
 		myImages.add(doodleRImg);// 0
 		myImages.add(starB); // 1
 		myImages.add(starW); // 2
-		myImages.add(brownP1); // 3
+/*		myImages.add(brownP1); // 3
 		myImages.add(brownP2); // 4
 		myImages.add(brownP3); // 5
 		myImages.add(brownP4); // 6
 		myImages.add(brownP5); // 7
 		myImages.add(brownP6); // 8
-		myImages.add(whiteP); // 9
+*/		myImages.add(whiteP); // 9
 		myImages.add(astr); // 10
 		myImages.add(batM1); // 11
 		myImages.add(batM2); // 12
@@ -310,30 +312,30 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		offScreenBuffer.drawImage(myImages.get(tempPlat2.getId()),
 				tempPlat2.getX(), tempPlat2.getY(), this);
 	}
-
+//UNEEDED v
 	public void updatePlat3(int k, Character plat) {
 		// manages brown platforms, continues the animation by changing images
 		Platform brownPlat = (Platform) plat;
 
-		if (brownPlat.getBrownAnimation() == true) {
-			if (brownPlat.getId() == 8) {
+		if (brownPlat.getBrownAnimation() == true) {//checks if the brownplat animation is needed
+			if (brownPlat.getId() == 8) {//checks if it is the end of the animation
 				myPlatforms.remove(k);
 			}
 
-			if (brownPlat.getId() < 8) {
+			if (brownPlat.getId() < 8) {//checks if the animation is in process
 				offScreenBuffer.drawImage(myImages.get(brownPlat.getId()),
 						brownPlat.getX(), brownPlat.getY(), this);
-				brownPlat.setId(plat.getId() + 1);
+				brownPlat.setId(plat.getId() + 1);//moves the animation forward
 				myPlatforms.set(k, brownPlat);
 			}
 		}
 
-		if (brownPlat.getBrownAnimation() == false) {
-			offScreenBuffer.drawImage(myImages.get(brownPlat.getId()),
+		if (brownPlat.getBrownAnimation() == false) {//if an animation isn't needed
+			offScreenBuffer.drawImage(myImages.get(brownPlat.getId()),//draws the platform
 					brownPlat.getX(), brownPlat.getY(), this);
 		}
 	}
-	
+//UNEEDED ^	
 	public void updatePlatAst(int k, Character plat) {
 		// manages astroids, continues the animation by changing images
 		Platform astroid = (Platform) plat;
@@ -536,7 +538,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void calculateScore() {
 		readScores();
 
-		if (score > people.get(5).getScore()) {
+		if (score > people.get(4).getScore()) {
 
 			String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
@@ -1739,9 +1741,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			// F3
 			if (FOREST_MODE == false) {
 				FOREST_MODE = true;
-				myImages.set(10, dblueF);
-				myImages.set(1, greenF);
-				myImages.set(2, dblueF);
+				myImages.set(10, astr);
+				myImages.set(1, starB);
+				myImages.set(2, starW);
 				myImages.set(9, whiteF);
 				myImages.set(14, greenS0F);
 				myImages.set(15, greenS1F);
