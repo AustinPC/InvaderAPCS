@@ -21,9 +21,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public boolean slowDown = false;
 	public boolean first = true;
 	public boolean explTimer = false;
-	
+
 	public boolean testMode = false;
-	
+
 	private int eCount = 0;
 	private int sCount = 0;
 	private int dCount = 0;
@@ -50,7 +50,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	private MediaTracker mt;
 	private Image gridImg, topbar, bulletImg;
 	private Image doodleRImg, doodleLImg, doodleSImg;
-	private Image starB, starW, whiteP, astr, greenS0, greenS1, expl, reward1, reward2, reward3;
+	private Image starB, starW, whiteP, astr, greenS0, greenS1, expl, reward1,
+			reward2, reward3;
 	private Image brownP1, brownP2, brownP3, brownP4, brownP5, brownP6;
 	private Image batM1, batM2, batM3;
 	private Image intro0, intro2, intro1, intro3, intro4, scores0, scores1,
@@ -83,11 +84,11 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	// called by Applet before beginning -
 	// give all attributes starting values here.
 	public void init() {
-		
+
 		eCount = 0;
 		sCount = 0;
 		dCount = 0;
-		
+
 		ac = getAudioClip(getDocumentBase(), "sounds/mystery.wav");
 		acFall = getAudioClip(getDocumentBase(), "sounds/end.wav");
 		acShot = getAudioClip(getDocumentBase(), "sounds/laser.wav");
@@ -138,12 +139,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		doodleSImg = Toolkit.getDefaultToolkit().getImage(
 				"images/Galaga_ship.png");
 
-		batM1 = Toolkit.getDefaultToolkit()
-				.getImage("images/monsters/black_hole.png");
-		batM2 = Toolkit.getDefaultToolkit()
-				.getImage("images/monsters/black_hole.png");
-		batM3 = Toolkit.getDefaultToolkit()
-				.getImage("images/monsters/black_hole.png");
+		batM1 = Toolkit.getDefaultToolkit().getImage(
+				"images/monsters/black_hole.png");
+		batM2 = Toolkit.getDefaultToolkit().getImage(
+				"images/monsters/black_hole.png");
+		batM3 = Toolkit.getDefaultToolkit().getImage(
+				"images/monsters/black_hole.png");
 
 		greenS0 = Toolkit.getDefaultToolkit().getImage("images/p-green-s1.png");
 		greenS1 = Toolkit.getDefaultToolkit().getImage("images/p-green-s0.png");
@@ -152,7 +153,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		expl = Toolkit.getDefaultToolkit().getImage("images/explosion.png");
 		whiteP = Toolkit.getDefaultToolkit().getImage("images/p-white.png");
 		astr = Toolkit.getDefaultToolkit().getImage("images/asteroid.png");
-		reward1 = Toolkit.getDefaultToolkit().getImage("images/electricity.png");
+		reward1 = Toolkit.getDefaultToolkit()
+				.getImage("images/electricity.png");
 		reward2 = Toolkit.getDefaultToolkit().getImage("images/heart.png");
 		reward3 = Toolkit.getDefaultToolkit().getImage("images/clock.png");
 
@@ -222,7 +224,6 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		myImages.add(reward1); // 19
 		myImages.add(reward2); // 20
 		myImages.add(reward3); // 21
-		
 
 		// load images to Media Tracker
 		for (Image i : myImages) {
@@ -334,42 +335,42 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 					brownPlat.getX(), brownPlat.getY(), this);
 		}
 	}
-	
+
 	public void updateGravity(Character ch, Character mon) {
 		// manages gravity from black holes
 		Character character = ch;
 		Monster black = (Monster) mon;
-		
+
 		int chX = ch.getX();
 		int chY = ch.getY();
 
 		int monX = mon.getX();
 		int monY = mon.getY();
-		
+
 		if (chX <= monX) {
 			ch.changeX(2);
-		}else{
+		} else {
 			ch.changeX(-2);
 		}
-		
+
 		if (chY <= monY) {
 			ch.changeY(2);
-		}else{
+		} else {
 			ch.changeY(-2);
 		}
 	}
-	
+
 	public void updatePlatAst(int k, Character plat) {
 		// manages astroids, continues the animation by changing images
 		Platform astroid = (Platform) plat;
 
 		if (astroid.getBrownAnimation() == true) {
-			
-				offScreenBuffer.drawImage(myImages.get(astroid.getId()),
-						astroid.getX(), astroid.getY(), this);
-				//astroid.setId(plat.getId() + 1);
-				myPlatforms.set(k, astroid);
-			
+
+			offScreenBuffer.drawImage(myImages.get(astroid.getId()),
+					astroid.getX(), astroid.getY(), this);
+			// astroid.setId(plat.getId() + 1);
+			myPlatforms.set(k, astroid);
+
 		}
 
 		if (astroid.getBrownAnimation() == false) {
@@ -407,17 +408,17 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				tempStar.setVcount(tempStar.getVcount() - 1);
 			}
 		}
-		
-		//if(tempStar.getBrownAnimation()){
-			myPlatforms.set(k, tempStar);
-			offScreenBuffer.drawImage(myImages.get(tempStar.getId()),
-					tempStar.getX(), tempStar.getY(), this);
-		//}else{
-//			myPlatforms.set(k, tempStar);
-//			offScreenBuffer.drawImage(myImages.get(tempStar.getId()),
-//					tempStar.getX(), tempStar.getY(), this);
-		//}
-			
+
+		// if(tempStar.getBrownAnimation()){
+		myPlatforms.set(k, tempStar);
+		offScreenBuffer.drawImage(myImages.get(tempStar.getId()),
+				tempStar.getX(), tempStar.getY(), this);
+		// }else{
+		// myPlatforms.set(k, tempStar);
+		// offScreenBuffer.drawImage(myImages.get(tempStar.getId()),
+		// tempStar.getX(), tempStar.getY(), this);
+		// }
+
 	}
 
 	public void updateMonster(int w, Character mon) {
@@ -446,50 +447,50 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		// VERTICAL MOVEMENT
-//		if (tempv == -1) {
-//			if (vcount >= 25) {
-//				tempMonster.setVV(1);
-//			}
-//
-//			if (vcount < 25) {
-//				tempMonster.changeY(tempv);
-//				tempMonster.setVcount(tempMonster.getVcount() + 1);
-//			}
-//		}
-//
-//		if (tempv == 1) {
-//			if (vcount <= -25) {
-//				tempMonster.setVV(-1);
-//			}
-//
-//			if (vcount > -25) {
-//				tempMonster.changeY(tempv);
-//				tempMonster.setVcount(tempMonster.getVcount() - 1);
-//			}
-//		}
+		// if (tempv == -1) {
+		// if (vcount >= 25) {
+		// tempMonster.setVV(1);
+		// }
+		//
+		// if (vcount < 25) {
+		// tempMonster.changeY(tempv);
+		// tempMonster.setVcount(tempMonster.getVcount() + 1);
+		// }
+		// }
+		//
+		// if (tempv == 1) {
+		// if (vcount <= -25) {
+		// tempMonster.setVV(-1);
+		// }
+		//
+		// if (vcount > -25) {
+		// tempMonster.changeY(tempv);
+		// tempMonster.setVcount(tempMonster.getVcount() - 1);
+		// }
+		// }
 
-//		// HORIZONTAL MOVEMENT
-//		if (temph == -1) {
-//			if (hcount >= 60) {
-//				tempMonster.setHV(1);
-//			}
-//
-//			if (hcount < 60) {
-//				tempMonster.changeX(temph);
-//				tempMonster.setHcount(tempMonster.getHcount() + 1);
-//			}
-//		}
-//
-//		if (temph == 1) {
-//			if (hcount <= -60) {
-//				tempMonster.setHV(-1);
-//			}
-//
-//			if (hcount > -60) {
-//				tempMonster.changeX(temph);
-//				tempMonster.setHcount(tempMonster.getHcount() - 1);
-//			}
-//		}
+		// // HORIZONTAL MOVEMENT
+		// if (temph == -1) {
+		// if (hcount >= 60) {
+		// tempMonster.setHV(1);
+		// }
+		//
+		// if (hcount < 60) {
+		// tempMonster.changeX(temph);
+		// tempMonster.setHcount(tempMonster.getHcount() + 1);
+		// }
+		// }
+		//
+		// if (temph == 1) {
+		// if (hcount <= -60) {
+		// tempMonster.setHV(-1);
+		// }
+		//
+		// if (hcount > -60) {
+		// tempMonster.changeX(temph);
+		// tempMonster.setHcount(tempMonster.getHcount() - 1);
+		// }
+		// }
 
 		if ((shiftDown == true) && (samePlatform == false)) {
 			tempMonster.changeY(BSDS);
@@ -507,22 +508,22 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void readScores() {
 		people = new ArrayList<Person>();
 
-		try {
-			
-			FileReader fr = new FileReader("scores.txt");
-			BufferedReader br = new BufferedReader(fr);
-			String s;
-			while ((s = br.readLine()) != null) {
-				int num = Integer.parseInt(br.readLine());
-				Person per = new Person(s, num);
-				people.add(per);
-				//System.out.print("People#: " + people.size());
-			}
-			fr.close();
-		} catch (IOException e) {
-		}
+		// try {
+		//
+		// FileReader fr = new FileReader("scores.txt");
+		// BufferedReader br = new BufferedReader(fr);
+		// String s;
+		// while ((s = br.readLine()) != null) {
+		// int num = Integer.parseInt(br.readLine());
+		// Person per = new Person(s, num);
+		// people.add(per);
+		// //System.out.print("People#: " + people.size());
+		// }
+		// fr.close();
+		// } catch (IOException e) {
+		// }
 
-		//System.out.print("People#: " + people.size());
+		// System.out.print("People#: " + people.size());
 		// sort scores
 
 		ArrayList sorted = new ArrayList<Person>();
@@ -570,57 +571,109 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void calculateScore() {
-		
+
 		readScores();
 
-		if (score > people.get(5).getScore()) {
+		if (people.size() > 0) {
 
-			String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+			if (score > people.get(people.size()).getScore()) {
 
-			name = JOptionPane.showInputDialog(null,
-					"You have gotten a new high score!\nYour Score: " + score
-							+ "\nPlease enter your name below:", "High Score",
-					JOptionPane.INFORMATION_MESSAGE);
+				String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-			if (name == null) {
-				name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-			}
+				name = JOptionPane.showInputDialog(null,
+						"You have gotten a new high score!\nYour Score: "
+								+ score + "\nPlease enter your name below:",
+						"High Score", JOptionPane.INFORMATION_MESSAGE);
 
-			while ((name.length() > 20) || (name.length() == 0)) {
-				name = JOptionPane
-						.showInputDialog(
-								null,
-								"You have gotten a new high score!\nYour Score: "
-										+ score
-										+ "\nPlease enter your name below:\n\nMust be less than 20 characters.",
-								"High Score", JOptionPane.INFORMATION_MESSAGE);
 				if (name == null) {
 					name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 				}
-			}
 
-			// write score to file
-			Person per = new Person(name, score);
-
-			people.add(per);
-
-			// add new hiscore to end
-			// keep moving up the hiscore table until it belongs
-
-			for (int k = people.size() - 1; k > 0; k--) {
-				Person current = people.get(k);
-
-				if (per.getScore() > current.getScore()) {
-					// swap 2
-					Person temp = current;
-					people.set(k, per);
-					people.set(k - 1, temp);
+				while ((name.length() > 20) || (name.length() == 0)) {
+					name = JOptionPane
+							.showInputDialog(
+									null,
+									"You have gotten a new high score!\nYour Score: "
+											+ score
+											+ "\nPlease enter your name below:\n\nMust be less than 20 characters.",
+									"High Score",
+									JOptionPane.INFORMATION_MESSAGE);
+					if (name == null) {
+						name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+					}
 				}
-			}
-			// keep array size at 6
-			people.remove(6);
-			//drawScores();
 
+				// write score to file
+				Person per = new Person(name, score);
+
+				people.add(per);
+
+				// add new hiscore to end
+				// keep moving up the hiscore table until it belongs
+
+				for (int k = people.size() - 1; k > 0; k--) {
+					Person current = people.get(k);
+
+					if (per.getScore() > current.getScore()) {
+						// swap 2
+						Person temp = current;
+						people.set(k, per);
+						people.set(k - 1, temp);
+					}
+				}
+				// keep array size at 6
+				people.remove(6);
+				// drawScores();
+
+			}else{
+				String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+				name = JOptionPane.showInputDialog(null,
+						"You have gotten a new high score!\nYour Score: "
+								+ score + "\nPlease enter your name below:",
+						"High Score", JOptionPane.INFORMATION_MESSAGE);
+
+				if (name == null) {
+					name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+				}
+
+				while ((name.length() > 20) || (name.length() == 0)) {
+					name = JOptionPane
+							.showInputDialog(
+									null,
+									"You have gotten a new high score!\nYour Score: "
+											+ score
+											+ "\nPlease enter your name below:\n\nMust be less than 20 characters.",
+									"High Score",
+									JOptionPane.INFORMATION_MESSAGE);
+					if (name == null) {
+						name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+					}
+				}
+
+				// write score to file
+				Person per = new Person(name, score);
+
+				people.add(per);
+
+				// add new hiscore to end
+				// keep moving up the hiscore table until it belongs
+
+				for (int k = people.size() - 1; k > 0; k--) {
+					Person current = people.get(k);
+
+					if (per.getScore() > current.getScore()) {
+						// swap 2
+						Person temp = current;
+						people.set(k, per);
+						people.set(k - 1, temp);
+					}
+				}
+				// keep array size at 6
+				people.remove(6);
+				// drawScores();
+
+			}
 		}
 
 	}
@@ -636,31 +689,31 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			fCount = 1;
 			first = true;
 		}
-		
-		//Checking the different reward counts
-		if(extraShot){
-			if(eCount <= 300){
+
+		// Checking the different reward counts
+		if (extraShot) {
+			if (eCount <= 300) {
 				eCount++;
-			}else{
+			} else {
 				eCount = 0;
 				extraShot = false;
 			}
 		}
-		
-		if(shield){
-			if(sCount <= 300){
+
+		if (shield) {
+			if (sCount <= 300) {
 				sCount++;
-			}else{
+			} else {
 				sCount = 0;
 				shield = false;
 			}
 		}
-		
-		if(slowDown){
-			if(dCount <= 250){
+
+		if (slowDown) {
+			if (dCount <= 250) {
 				BSDS = 1;
 				dCount++;
-			}else{
+			} else {
 				BSDS = 3;
 				dCount = 0;
 				slowDown = false;
@@ -727,20 +780,20 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 
 			Doodle tempDoodle = (Doodle) myGuys.get(0);
-//			if(first){
-//				tempDoodle.changeY(400);
-//				first = false;
-//			}
+			// if(first){
+			// tempDoodle.changeY(400);
+			// first = false;
+			// }
 
-//			if (springCount < 1) {
-//				SDV = -9;
-//				BSDS = 3;
-//				DSDS = 1;
-//			}
-//
-//			if (springCount > 0) {
-//				springCount--;
-//			}
+			// if (springCount < 1) {
+			// SDV = -9;
+			// BSDS = 3;
+			// DSDS = 1;
+			// }
+			//
+			// if (springCount > 0) {
+			// springCount--;
+			// }
 
 			// if doodle is moving up
 			shiftDown = true;
@@ -764,23 +817,22 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				if ((tempPlatform.getId() >= 3) && (tempPlatform.getId() <= 9)) {
 					updatePlat2(k, tempPlatform);
 				}
-				
-				//astroid
+
+				// astroid
 				if ((tempPlatform.getId() == 18)) {
 					updatePlatAst(k, tempPlatform);
 				}
-				
-				//electricity
+
+				// electricity
 				if ((tempPlatform.getId() == 19)) {
 					updatePlatAst(k, tempPlatform);
 				}
-
 
 				// dark blue - vertical scroll
 				if (tempPlatform.getId() == 10) {
 					updatePlat2(k, tempPlatform);
 				} // if its a normal platform
-				else if(level != 0){
+				else if (level != 0) {
 					offScreenBuffer.drawImage(
 							myImages.get(tempPlatform.getId()),
 							tempPlatform.getX(), tempPlatform.getY(), this);
@@ -795,7 +847,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				// if platform moves off bottom of screen, create new platform
 				if (tempPlatform.getY() > 400) {
 					// interval for every Y to create new platform
-					
+
 					if (creationCounter > ((int) (Math.random() * 7) + 5)) {
 						generateLiveRandomPlatform();
 						creationCounter = 0;
@@ -811,16 +863,16 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			if (myPlatforms.size() < 13) {
 				generateLiveRandomPlatform();
 			}
-			
+
 			int blck = (int) (Math.random() * 500) + 1;
 			int blck2 = (int) (Math.random() * 500) + 1;
-			
-			if((blck >= 40) && (blck < 41)){
-				//if((blck >= 50) && (blck < 55)){
-					if (myMonsters.size() < 1){
-						generateMonster();
-					}
-				//}
+
+			if ((blck >= 40) && (blck < 41)) {
+				// if((blck >= 50) && (blck < 55)){
+				if (myMonsters.size() < 1) {
+					generateMonster();
+				}
+				// }
 			}
 
 			for (int w = 0; w < myMonsters.size(); w++) {
@@ -847,13 +899,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 
 			// draw doodle, last character
-			if(first){
+			if (first) {
 				tempDoodle.setY(300);
 				offScreenBuffer.drawImage(myImages.get(tempDoodle.show()),
 						tempDoodle.getX(), tempDoodle.getY(), this);
 				tempDoodle.move();
 				first = false;
-			}else{
+			} else {
 				offScreenBuffer.drawImage(myImages.get(tempDoodle.show()),
 						tempDoodle.getX(), tempDoodle.getY(), this);
 				tempDoodle.move();
@@ -878,19 +930,19 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			checkPlatformHit();
 			checkBulletHit();
 			checkDoodleGameOver();
-			
+
 			for (int k = 0; k < myPlatforms.size(); k++) {
 				for (int r = 0; r < myMonsters.size(); r++) {
 					updateGravity(myPlatforms.get(k), myMonsters.get(r));
 				}
 			}
-			
+
 			for (int k = 0; k < myGuys.size(); k++) {
 				for (int r = 0; r < myMonsters.size(); r++) {
 					updateGravity(myGuys.get(k), myMonsters.get(r));
 				}
 			}
-			
+
 			for (int k = 0; k < myBullets.size(); k++) {
 				for (int r = 0; r < myMonsters.size(); r++) {
 					updateGravity(myBullets.get(k), myMonsters.get(r));
@@ -907,7 +959,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		// checks if below screen
 		if (dod.getY() > 620) {
 			gameOver = true;
-			//calculateScore();
+			// calculateScore();
 			gameOn = false;
 		}
 
@@ -919,8 +971,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				if (mon.equals(dod)) {
 					gameOver = true;
 					gameOn = false;
-					//calculateScore();
-					//drawScores();
+					// calculateScore();
+					// drawScores();
 				}
 			}
 
@@ -930,38 +982,39 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		for (int k = 0; k < myPlatforms.size(); k++) {
 			Character str = myPlatforms.get(k);
 
-			if(str.equals(dod) && myPlatforms.get(k).getId() == 19){
+			if (str.equals(dod) && myPlatforms.get(k).getId() == 19) {
 				myPlatforms.remove(k);
 				extraShot = true;
-			}else if (str.equals(dod) && myPlatforms.get(k).getId() == 20) {
+			} else if (str.equals(dod) && myPlatforms.get(k).getId() == 20) {
 				myPlatforms.remove(k);
 				shield = true;
-			}else if (str.equals(dod) && myPlatforms.get(k).getId() == 21) {
+			} else if (str.equals(dod) && myPlatforms.get(k).getId() == 21) {
 				myPlatforms.remove(k);
 				slowDown = true;
-			}else if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
-				if(!shield && !testMode){
+			} else if (str.equals(dod) && myPlatforms.get(k).getId() != 19) {
+				if (!shield && !testMode) {
 					gameOver = true;
 					gameOn = false;
 				}
 			}
 
 		}
-		
+
 		for (int k = 0; k < myPlatforms.size(); k++) {
 			for (int r = 0; r < myMonsters.size(); r++) {
-				if(myPlatforms.get(k).equals(myMonsters.get(r))){
+				if (myPlatforms.get(k).equals(myMonsters.get(r))) {
 					myPlatforms.remove(k);
 				}
 			}
 		}
-		
+
 	}
+
 	public void generateLiveRandomPlatform() {
 		int color = 1;
 		int ast = 1;
-		int bound = (score/10000) + 48;
-		int levelTracker = (score/10000) + 1;
+		int bound = (score / 10000) + 48;
+		int levelTracker = (score / 10000) + 1;
 		boolean astCheck = false;
 
 		// processes levels
@@ -1002,7 +1055,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 		color = (int) (Math.random() * 110) + 1;
 		ast = (int) (Math.random() * 500) + 1;
-		
+
 		// if (level == 0) {
 		// color = 1;
 		// }
@@ -1012,19 +1065,19 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		yp = yp * -1;
 
 		// green
-//		 if ((color > 40) && (color <= 50)) {
-//		 // makes the game harder, less green platforms
-//		 if (level == 2) {
-//		 color = (int) (Math.random() * 99) + 1;
-//		 } else if (level == 3) {
-//		 color = (int) (Math.random() * 70) + 30;
-//		 } else if (level == 4) {
-//		 color = (int) (Math.random() * 63) + 45;
-//		 } else if (level == 5) {
-//		 color = (int) (Math.random() * 63) + 45;
-//		 }
-//		
-		
+		// if ((color > 40) && (color <= 50)) {
+		// // makes the game harder, less green platforms
+		// if (level == 2) {
+		// color = (int) (Math.random() * 99) + 1;
+		// } else if (level == 3) {
+		// color = (int) (Math.random() * 70) + 30;
+		// } else if (level == 4) {
+		// color = (int) (Math.random() * 63) + 45;
+		// } else if (level == 5) {
+		// color = (int) (Math.random() * 63) + 45;
+		// }
+		//
+
 		for (int k = 0; k < myPlatforms.size(); k++) {
 			// cycle through platforms and draw
 			Character tempPlatform = (Platform) myPlatforms.get(k);
@@ -1036,10 +1089,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				astCheck = true;
 			}
 
-			
 		}
-		
-		if(!astCheck){
+
+		if (!astCheck) {
 			if ((color > 40) && (color <= 50)) {
 				Platform plat1 = new Platform(18, xp, yp, 58, 15);
 				myPlatforms.add(plat1);
@@ -1048,63 +1100,62 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		// light blue LR
-		//if(level != 0){
-			
-				if(level == 1){
-					if ((color > 49) && (color <= 50)) {
-						
-						Platform plat2 = new Platform(2, xp, yp, 56, 16);
-			
-						myPlatforms.add(plat2);
-					}
-				} else if (level == 2) {
-					if ((color > 48) && (color <= 50)) {
-						
-						Platform plat2 = new Platform(2, xp, yp, 56, 16);
-			
-						myPlatforms.add(plat2);
-					}
-					 
-				} else if (level == 3) {
-					if ((color > 47) && (color <= 50)) {
-						
-						Platform plat2 = new Platform(2, xp, yp, 56, 16);
-			
-						myPlatforms.add(plat2);
-					}
-				
-				} else if (level == 4) {
-					if ((color > 46) && (color <= 50)) {
-						
-						Platform plat2 = new Platform(2, xp, yp, 56, 16);
-			
-						myPlatforms.add(plat2);
-					}
-					 
-				} else if (level == 5) {
-					if ((color > 45) && (color <= 50)) {
-						
-						Platform plat2 = new Platform(2, xp, yp, 56, 16);
-			
-						myPlatforms.add(plat2);
-					}
-				} else if (level >= 6){
-					if ((color > 45) && (color <= bound)) {
-						
-						Platform plat2 = new Platform(2, xp, yp, 56, 16);
-			
-						myPlatforms.add(plat2);
-						
-					}
-				}
-			
-	
-//			if ((color > 50) && (color <= 60) && (level < 2)) {
-//	
-//				color = 62;
-//	
-//			}
-		//}
+		// if(level != 0){
+
+		if (level == 1) {
+			if ((color > 49) && (color <= 50)) {
+
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+
+				myPlatforms.add(plat2);
+			}
+		} else if (level == 2) {
+			if ((color > 48) && (color <= 50)) {
+
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+
+				myPlatforms.add(plat2);
+			}
+
+		} else if (level == 3) {
+			if ((color > 47) && (color <= 50)) {
+
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+
+				myPlatforms.add(plat2);
+			}
+
+		} else if (level == 4) {
+			if ((color > 46) && (color <= 50)) {
+
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+
+				myPlatforms.add(plat2);
+			}
+
+		} else if (level == 5) {
+			if ((color > 45) && (color <= 50)) {
+
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+
+				myPlatforms.add(plat2);
+			}
+		} else if (level >= 6) {
+			if ((color > 45) && (color <= bound)) {
+
+				Platform plat2 = new Platform(2, xp, yp, 56, 16);
+
+				myPlatforms.add(plat2);
+
+			}
+		}
+
+		// if ((color > 50) && (color <= 60) && (level < 2)) {
+		//
+		// color = 62;
+		//
+		// }
+		// }
 
 		// brown
 		// if ((color > 60) && (color <= 70)) {
@@ -1175,50 +1226,54 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			// checks if each bullet hits a platform
 			int elec = 1;
 			elec = (int) (Math.random() * 110) + 1;
-			
+
 			for (int a = 0; a < myPlatforms.size(); a++) {
 				if (myPlatforms.size() > 0) {
 					for (int k = 0; k < myBullets.size(); k++) {
 						if (myBullets.get(k).equals(myPlatforms.get(a))) {
-							if(myPlatforms.get(a).id == 18){
-								
-								
-								if((elec > 40) && (elec <= 45)){
-									Platform reward = new Platform(19, myPlatforms.get(a).getX(), 
+							if (myPlatforms.get(a).id == 18) {
+
+								if ((elec > 40) && (elec <= 45)) {
+									Platform reward = new Platform(19,
+											myPlatforms.get(a).getX(),
 											myPlatforms.get(a).getY(), 58, 15);
-									
+
 									myPlatforms.add(reward);
-																	
-								}else if((elec > 46) && (elec <= 54)){
-									Platform reward = new Platform(20, myPlatforms.get(a).getX(), 
+
+								} else if ((elec > 46) && (elec <= 54)) {
+									Platform reward = new Platform(20,
+											myPlatforms.get(a).getX(),
 											myPlatforms.get(a).getY(), 58, 15);
-									
+
 									myPlatforms.add(reward);
-									
-								}else if((elec > 50) && (elec <= 58)){
-									Platform reward = new Platform(21, myPlatforms.get(a).getX(), 
+
+								} else if ((elec > 50) && (elec <= 58)) {
+									Platform reward = new Platform(21,
+											myPlatforms.get(a).getX(),
 											myPlatforms.get(a).getY(), 58, 15);
-									
+
 									myPlatforms.add(reward);
-									
+
 								}
-								
+
 								myBullets.remove(k);
 								myPlatforms.remove(a);
-								
-							}else if((myPlatforms.get(a).id != 19) &&
-									myPlatforms.get(a).id != 20 && myPlatforms.get(a).id != 21){
-								
+
+							} else if ((myPlatforms.get(a).id != 19)
+									&& myPlatforms.get(a).id != 20
+									&& myPlatforms.get(a).id != 21) {
+
 								myBullets.remove(k);
-								
-								if((myPlatforms.get(a).id != 11) &&
-									myPlatforms.get(a).id != 12 && myPlatforms.get(a).id != 13){
+
+								if ((myPlatforms.get(a).id != 11)
+										&& myPlatforms.get(a).id != 12
+										&& myPlatforms.get(a).id != 13) {
 									myPlatforms.remove(a);
 								}
-								
+
 								score = score + 500;
 							}
-							
+
 						}
 					}
 				}
@@ -1243,20 +1298,19 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 						Platform newBrown = (Platform) myPlatforms.get(a);
 						newBrown.setBrownAnimation(true);
 						myPlatforms.set(a, newBrown);
-					}else if (hitPlat.getId() == 19) {
+					} else if (hitPlat.getId() == 19) {
 						myPlatforms.remove(a);
 						extraShot = true;
 						eCount = 0;
-					}else if (hitPlat.getId() == 20) {
+					} else if (hitPlat.getId() == 20) {
 						myPlatforms.remove(a);
 						shield = true;
 						sCount = 0;
-					}
-					else if (hitPlat.getId() == 20) {
+					} else if (hitPlat.getId() == 20) {
 						myPlatforms.remove(a);
 						slowDown = true;
 						dCount = 0;
-					}else if (hitPlat.getId() == 14) {
+					} else if (hitPlat.getId() == 14) {
 						Platform launch = (Platform) myPlatforms.get(a);
 						launch.setId(15);
 						myPlatforms.set(a, launch);
@@ -1291,7 +1345,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 						lastHitPlatform = (Platform) myPlatforms.get(a);
 					}
 
-				} else if (doodle1.checkHitPlatform(myBullets.get(a))){
+				} else if (doodle1.checkHitPlatform(myBullets.get(a))) {
 					gameOver = true;
 					gameOn = false;
 				}
@@ -1704,34 +1758,34 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
-//		case 32: {
-//			// space key
-//			if (spaceCount == 0) {
-//				samePlatform = true;
-//				Doodle temp = (Doodle) myGuys.get(0);
-//				temp.setVelocity(SDV);
-//				myGuys.set(0, temp);
-//				spaceCount = 1;
-//			}
-//			break;
-//		}
+		// case 32: {
+		// // space key
+		// if (spaceCount == 0) {
+		// samePlatform = true;
+		// Doodle temp = (Doodle) myGuys.get(0);
+		// temp.setVelocity(SDV);
+		// myGuys.set(0, temp);
+		// spaceCount = 1;
+		// }
+		// break;
+		// }
 
 		case 49: {
 			// 1 key
 			score = 5000;
 			break;
 		}
-		
+
 		case KeyEvent.VK_T: {
 			// T key
-			if(testMode){
+			if (testMode) {
 				testMode = false;
-			}else{
+			} else {
 				testMode = true;
 			}
 			break;
 		}
-		
+
 		case KeyEvent.VK_Y: {
 			// Y key
 			score += 200;
@@ -1739,18 +1793,18 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 		case KeyEvent.VK_SHIFT: {
 			// shift key
-			if(extraShot){
+			if (extraShot) {
 				acShot.play();
 				createAltBullet(0, -180, 9);
 				createAltBullet(0, -180, -9);
 				createBullet(0, -180);
 				createAltBullet(0, -180, 18);
 				createAltBullet(0, -180, -18);
-			}else{
+			} else {
 				acShot.play();
 				createBullet(0, -180);
 			}
-			
+
 			break;
 		}
 
