@@ -508,20 +508,20 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void readScores() {
 		people = new ArrayList<Person>();
 
-		// try {
-		//
-		// FileReader fr = new FileReader("scores.txt");
-		// BufferedReader br = new BufferedReader(fr);
-		// String s;
-		// while ((s = br.readLine()) != null) {
-		// int num = Integer.parseInt(br.readLine());
-		// Person per = new Person(s, num);
-		// people.add(per);
-		// //System.out.print("People#: " + people.size());
-		// }
-		// fr.close();
-		// } catch (IOException e) {
-		// }
+		try {
+
+			FileReader fr = new FileReader("scores.txt");
+			BufferedReader br = new BufferedReader(fr);
+			String s;
+			while ((s = br.readLine()) != null) {
+				int num = Integer.parseInt(br.readLine());
+				Person per = new Person(s, num);
+				people.add(per);
+				System.out.print("ADDED");
+			}
+			fr.close();
+		} catch (IOException e) {
+		}
 
 		// System.out.print("People#: " + people.size());
 		// sort scores
@@ -550,7 +550,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		people = sorted;
-		drawScores();
+		//drawScores();
 
 	}
 
@@ -560,7 +560,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		// read from arraylist and draw on screen
 		for (int i = 0; i < people.size(); i++) {
 			Person temp = people.get(i);
-
+			System.out.println("Name: " + people.get(i).getName());
 			int newY = 166 + (yi * i);
 
 			offScreenBuffer.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
@@ -571,111 +571,93 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void calculateScore() {
-
+	
 		readScores();
+		
+		//if (people.size() > 0) {
 
-		if (people.size() > 0) {
+		if (score > people.get(people.size() - 1).getScore()) {
 
-			if (score > people.get(people.size()).getScore()) {
+			String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-				String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+			name = JOptionPane.showInputDialog(null,
+					"You have gotten a new high score!\nYour Score: " + score
+							+ "\nPlease enter your name below:", "High Score",
+					JOptionPane.INFORMATION_MESSAGE);
 
-				name = JOptionPane.showInputDialog(null,
-						"You have gotten a new high score!\nYour Score: "
-								+ score + "\nPlease enter your name below:",
-						"High Score", JOptionPane.INFORMATION_MESSAGE);
-
-				if (name == null) {
-					name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-				}
-
-				while ((name.length() > 20) || (name.length() == 0)) {
-					name = JOptionPane
-							.showInputDialog(
-									null,
-									"You have gotten a new high score!\nYour Score: "
-											+ score
-											+ "\nPlease enter your name below:\n\nMust be less than 20 characters.",
-									"High Score",
-									JOptionPane.INFORMATION_MESSAGE);
-					if (name == null) {
-						name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-					}
-				}
-
-				// write score to file
-				Person per = new Person(name, score);
-
-				people.add(per);
-
-				// add new hiscore to end
-				// keep moving up the hiscore table until it belongs
-
-				for (int k = people.size() - 1; k > 0; k--) {
-					Person current = people.get(k);
-
-					if (per.getScore() > current.getScore()) {
-						// swap 2
-						Person temp = current;
-						people.set(k, per);
-						people.set(k - 1, temp);
-					}
-				}
-				// keep array size at 6
-				people.remove(6);
-				// drawScores();
-
-			}else{
-				String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-
-				name = JOptionPane.showInputDialog(null,
-						"You have gotten a new high score!\nYour Score: "
-								+ score + "\nPlease enter your name below:",
-						"High Score", JOptionPane.INFORMATION_MESSAGE);
-
-				if (name == null) {
-					name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-				}
-
-				while ((name.length() > 20) || (name.length() == 0)) {
-					name = JOptionPane
-							.showInputDialog(
-									null,
-									"You have gotten a new high score!\nYour Score: "
-											+ score
-											+ "\nPlease enter your name below:\n\nMust be less than 20 characters.",
-									"High Score",
-									JOptionPane.INFORMATION_MESSAGE);
-					if (name == null) {
-						name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-					}
-				}
-
-				// write score to file
-				Person per = new Person(name, score);
-
-				people.add(per);
-
-				// add new hiscore to end
-				// keep moving up the hiscore table until it belongs
-
-				for (int k = people.size() - 1; k > 0; k--) {
-					Person current = people.get(k);
-
-					if (per.getScore() > current.getScore()) {
-						// swap 2
-						Person temp = current;
-						people.set(k, per);
-						people.set(k - 1, temp);
-					}
-				}
-				// keep array size at 6
-				people.remove(6);
-				// drawScores();
-
+			if (name == null) {
+				name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 			}
-		}
 
+			while ((name.length() > 20) || (name.length() == 0)) {
+				name = JOptionPane
+						.showInputDialog(
+								null,
+								"You have gotten a new high score!\nYour Score: "
+										+ score
+										+ "\nPlease enter your name below:\n\nMust be less than 20 characters.",
+								"High Score", JOptionPane.INFORMATION_MESSAGE);
+				if (name == null) {
+					name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+				}
+			}
+			// write score to file
+			Person pers = new Person(name, score);
+			people.add(pers);
+			
+			File file = new File("scores.txt");
+			String content = "";
+			
+			for (int k = people.size(); k > 0; k--) {
+				content += people.get(k).getName();
+				content += "\n" + people.get(k).getScore();
+			
+			}
+			
+			try (FileOutputStream fop = new FileOutputStream(file)) {
+	 
+				// if file doesn't exists, then create it
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+	 
+				// get the content in bytes
+				byte[] contentInBytes = content.getBytes();
+	 
+				fop.write(contentInBytes);
+				fop.flush();
+				fop.close();
+	 
+				//System.out.println("Done");
+	 
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+
+			
+
+			// add new hiscore to end
+			// keep moving up the hiscore table until it belongs
+			
+			for (int k = people.size() - 1; k > 0; k--) {
+				Person current = people.get(k);
+
+				if (pers.getScore() > current.getScore()) {
+					// swap 2
+					Person temp = current;
+					people.set(k, pers);
+					people.set(k - 1, temp);
+				}
+			}
+			// keep array size at 6
+			if(people.size() >= 5){
+				people.remove(5);
+			}
+			//readScores();
+			drawScores();
+
+		}
 	}
 
 	private int fCount = 0;
