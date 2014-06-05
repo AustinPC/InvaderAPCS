@@ -254,6 +254,21 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 		int yp = 500;
 		int xp = (int) (Math.random() * 400);
+		
+		try {
+
+			FileReader fr = new FileReader("scores.txt");
+			BufferedReader br = new BufferedReader(fr);
+			String s;
+			while ((s = br.readLine()) != null) {
+				int num = Integer.parseInt(br.readLine());
+				Person per = new Person(s, num);
+				people.add(per);
+
+			}
+			fr.close();
+		} catch (IOException e) {
+		}
 
 		// myPlatforms.add(new Platform(1, xp, 500, 58, 15));
 	}
@@ -508,19 +523,52 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void readScores() {
 		people = new ArrayList<Person>();
 
-		try {
+		File file = new File("scores.txt");
+		String content = "";
 
-			FileReader fr = new FileReader("scores.txt");
-			BufferedReader br = new BufferedReader(fr);
-			String s;
-			while ((s = br.readLine()) != null) {
-				int num = Integer.parseInt(br.readLine());
-				Person per = new Person(s, num);
-				people.add(per);
-				System.out.print("ADDED");
+		//if (people.size() > 0) {
+
+			for (int k = people.size() - 1; k >= 0; k--) {
+				content += people.get(k).getName();
+				content += "\n" + people.get(k).getScore();
+				System.out.println(content);
+
 			}
-			fr.close();
-		} catch (IOException e) {
+
+			try (FileOutputStream fop = new FileOutputStream(file)) {
+
+				// if file doesn't exists, then create it
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+
+				// get the content in bytes
+				byte[] contentInBytes = content.getBytes();
+				System.out.println(content);
+				fop.write(contentInBytes);
+				fop.flush();
+				fop.close();
+
+				// System.out.println("Done");
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			try {
+
+				FileReader fr = new FileReader("scores.txt");
+				BufferedReader br = new BufferedReader(fr);
+				String s;
+				while ((s = br.readLine()) != null) {
+					int num = Integer.parseInt(br.readLine());
+					Person per = new Person(s, num);
+					people.add(per);
+
+				}
+				fr.close();
+			} catch (IOException e) {
+		//	}
 		}
 
 		// System.out.print("People#: " + people.size());
@@ -534,7 +582,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		while (people.size() > 0) {
 			int lowidx = 0;
 			highest = people.get(0);
-			System.out.print(people.get(0));
+			// System.out.print(people.get(0));
 
 			for (int i = 1; i < people.size(); i++) {
 				current = people.get(i);
@@ -550,7 +598,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		people = sorted;
-		//drawScores();
+		// drawScores();
 
 	}
 
@@ -560,7 +608,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		// read from arraylist and draw on screen
 		for (int i = 0; i < people.size(); i++) {
 			Person temp = people.get(i);
-			System.out.println("Name: " + people.get(i).getName());
+			// System.out.println("Name: " + people.get(i).getName());
 			int newY = 166 + (yi * i);
 
 			offScreenBuffer.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
@@ -571,10 +619,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void calculateScore() {
-	
+
 		readScores();
-		
-		//if (people.size() > 0) {
 
 		if (score > people.get(people.size() - 1).getScore()) {
 
@@ -604,44 +650,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			// write score to file
 			Person pers = new Person(name, score);
 			people.add(pers);
-			
-			File file = new File("scores.txt");
-			String content = "";
-			
-			for (int k = people.size(); k > 0; k--) {
-				content += people.get(k).getName();
-				content += "\n" + people.get(k).getScore();
-			
-			}
-			
-			try (FileOutputStream fop = new FileOutputStream(file)) {
-	 
-				// if file doesn't exists, then create it
-				if (!file.exists()) {
-					file.createNewFile();
-				}
-	 
-				// get the content in bytes
-				byte[] contentInBytes = content.getBytes();
-	 
-				fop.write(contentInBytes);
-				fop.flush();
-				fop.close();
-	 
-				//System.out.println("Done");
-	 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-
-			
 
 			// add new hiscore to end
 			// keep moving up the hiscore table until it belongs
-			
-			for (int k = people.size() - 1; k > 0; k--) {
-				Person current = people.get(k);
+
+			for (int k = people.size(); k > 0; k--) {
+				Person current = people.get(k - 1);
 
 				if (pers.getScore() > current.getScore()) {
 					// swap 2
@@ -651,13 +665,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				}
 			}
 			// keep array size at 6
-			if(people.size() >= 5){
+			if (people.size() >= 5) {
 				people.remove(5);
 			}
-			//readScores();
+			// readScores();
 			drawScores();
-
 		}
+		
 	}
 
 	private int fCount = 0;
