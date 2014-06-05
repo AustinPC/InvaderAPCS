@@ -256,18 +256,31 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		int xp = (int) (Math.random() * 400);
 		
 		try {
-
-			FileReader fr = new FileReader("scores.txt");
+			
+			FileReader fr = new FileReader("/Users/austin2/Documents/workspace/InvaderAPCS/src/scores.txt");
 			BufferedReader br = new BufferedReader(fr);
+			int numOfLines = 0;
 			String s;
+			
 			while ((s = br.readLine()) != null) {
+				numOfLines++;
 				int num = Integer.parseInt(br.readLine());
 				Person per = new Person(s, num);
 				people.add(per);
+				System.out.print("Added: " + people.size());
 
 			}
+//			br.reset();
+//			for(int i = 0; i <= 9; i++){
+//				int num = 0;//Integer.parseInt(br.readLine());
+//				Person per = new Person(s, num);
+//				people.add(per);
+//				System.out.print("Added: " + people.size());
+//			}
+			
 			fr.close();
 		} catch (IOException e) {
+			
 		}
 
 		// myPlatforms.add(new Platform(1, xp, 500, 58, 15));
