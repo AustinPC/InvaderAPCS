@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.sound.sampled.*;
 import java.io.*;
+
 import javax.swing.*;
 
 public class GameShell extends Applet implements KeyListener, MouseListener,
@@ -78,6 +79,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	// AudioClip for midi files
 	private AudioClip ac, acFall, acShot;
 	private Clip clip;
+	//Gets file for use
+	private File scoreFile = new File("scores.txt");
 
 	// called by Applet before beginning -
 	// give all attributes starting values here.
@@ -478,23 +481,54 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 	public void readScores() {
 		people = new ArrayList<Person>();
-
+//TODO- Implement Scanner instead of BufferedReader ()
 		try {
+			Scanner fileInput = new Scanner(scoreFile);
+			String line;
+			int num=0;
+			int count = 0;
+			while (fileInput.hasNextLine()){
+				line=fileInput.nextLine();
+				if(Integer.getInteger(line) == null){
+					System.out.println(line);
+					count++;
+					//System.exit(1);
+				}
+				else{
+					String numLine = fileInput.nextLine();
+					System.out.println(numLine);
+					num = Integer.parseInt(line);
+					count++;
+					//System.exit(1);
+				}
+				if (count == 2){
+					//System.exit(1);
+					Person per = new Person(line, num);
+					people.add(per);
+					count = 0;
+				}
+			}
+			fileInput.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		/*try {
 			FileReader fr = new FileReader("scores.txt");
 			BufferedReader br = new BufferedReader(fr);
 			String s;
 			while ((s = br.readLine()) != null) {
-				int num = Integer.parseInt(br.readLine());
+				int num = Integer.parseInt(br.readLine());//Getting entire file
 				Person per = new Person(s, num);
 				people.add(per);
 			}
 			fr.close();
 		} catch (IOException e) {
-		}
+		}*/
 
 		// sort scores
 
-		ArrayList sorted = new ArrayList<Person>();
+		ArrayList<Person> sorted = new ArrayList<Person>();
 
 		Person highest;
 		Person current;
@@ -517,6 +551,8 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 		people = sorted;
+		System.out.println(people);
+		System.exit(1);//SHOW AUSTIN!
 		drawScores();
 
 	}
@@ -540,7 +576,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public void calculateScore() {
 		readScores();
 
-		if (score > people.get(4).getScore()) {
+		if (score > people.get(people.size()-1).getScore()) {
 
 			String name = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
@@ -568,8 +604,23 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 			// write score to file
 			Person per = new Person(name, score);
-
 			people.add(per);
+			try{
+				//clears the file
+				PrintWriter pWriter = new PrintWriter(scoreFile);
+				pWriter.print("");
+				pWriter.close();
+				//writes new information to the file
+				FileWriter fWriter = new FileWriter(scoreFile.getAbsoluteFile());
+				BufferedWriter bWriter = new BufferedWriter(fWriter);
+				for (int i=0; i < people.size(); i++){
+					bWriter.write(people.get(i).getName());
+					bWriter.write("" + people.get(i).getScore());
+				}
+				bWriter.close();
+			}catch (IOException e){
+				e.printStackTrace();
+			}
 
 			// add new hiscore to end
 			// keep moving up the hiscore table until it belongs
@@ -1776,4 +1827,5 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 		}
 	}
+	
 }
