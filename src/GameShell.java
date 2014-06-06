@@ -24,12 +24,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	public boolean slowDown = false;
 	public boolean first = true;
 	public boolean explTimer = false;
+	public boolean blackhole = false;
 
 	public boolean testMode = false;
 
 	private int eCount = 0;
 	private int sCount = 0;
 	private int dCount = 0;
+	private int bCount = 0;
 
 	private int SDV = -9;
 	// PLATFORM SCROLL DOWN SPEED (higher number to fall faster)
@@ -257,29 +259,31 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 		int yp = 500;
 		int xp = (int) (Math.random() * 400);
-		
+
 		Scanner s = null;
+		File file = new File("scores.txt");
+		String path = file.getAbsolutePath();
 
-        try {
-            s = new Scanner(new BufferedReader(new FileReader("/Users/austin2/Documents/workspace/InvaderAPCS/src/scores.txt")));
+		try {
+			s = new Scanner(new BufferedReader(new FileReader(path)));
 
-            while (s.hasNext()) {
-            	String name = s.next();
-                int num = s.nextInt();
-                
-                Person p = new Person(name, num);
-                
-                people.add(p);
-                
-            }
-        } catch (FileNotFoundException e) {
+			while (s.hasNext()) {
+				String name = s.next();
+				int num = s.nextInt();
+
+				Person p = new Person(name, num);
+
+				people.add(p);
+
+			}
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-            if (s != null) {
-                s.close();
-            }
-        }
+			if (s != null) {
+				s.close();
+			}
+		}
 
 		// myPlatforms.add(new Platform(1, xp, 500, 58, 15));
 	}
@@ -537,14 +541,14 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		Person first;
 		Person temp;
 
-		if(people.size() > 0) {
-			
+		if (people.size() > 0) {
+
 			for (int i = people.size() - 1; i > 0; i--) {
 				first = people.get(i);
 				second = people.get(i - 1);
 
 				if (first.getScore() > second.getScore()) {
-					
+
 					temp = first;
 					people.set(i, second);
 					people.set(i - 1, temp);
@@ -553,12 +557,12 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 
 		}
-		
-		if(people.size() > 6){
-			System.out.println("Entered");
+
+		if (people.size() > 6) {
+			// System.out.println("Entered");
 			people.remove(people.size() - 1);
 		}
-		
+
 	}
 
 	public void drawScores() {
@@ -576,27 +580,30 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 	}
-	
-	public void saveScores(){
-		
+
+	public void saveScores() {
+
 		try {
-			File file = new File("/Users/austin2/Documents/workspace/InvaderAPCS/src/scores.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            for(Person p : people){
-            	bw.write(p.getName()+"\n");
-            	bw.write(p.getScore()+"\n");
-            }
-            bw.close();
-        } catch(Exception e) { System.out.println("can't write to usedcommands.txt..."); }
+			File file = new File(
+					"scores.txt");
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (Person p : people) {
+				bw.write(p.getName() + "\n");
+				bw.write(p.getScore() + "\n");
+			}
+			bw.close();
+		} catch (Exception e) {
+			System.out.println("can't write to usedcommands.txt...");
+		}
 	}
 
 	public void calculateScore() {
 
-		//readScores();
+		// readScores();
 
 		if (score > people.get(people.size() - 1).getScore()) {
 
@@ -631,7 +638,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			drawScores();
 			saveScores();
 		}
-		
+
 	}
 
 	private int fCount = 0;
@@ -673,6 +680,15 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 				BSDS = 3;
 				dCount = 0;
 				slowDown = false;
+			}
+		}
+
+		if (blackhole) {
+			if (bCount <= 500) {
+				bCount++;
+			} else {
+				bCount = 0;
+				blackhole = false;
 			}
 		}
 
@@ -823,12 +839,15 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			int blck = (int) (Math.random() * 500) + 1;
 			int blck2 = (int) (Math.random() * 500) + 1;
 
-			if ((blck >= 40) && (blck < 41)) {
-				// if((blck >= 50) && (blck < 55)){
-				if (myMonsters.size() < 1) {
-					generateMonster();
+			if (!blackhole) {
+				if ((blck >= 40) && (blck < 41)) {
+					// if((blck >= 50) && (blck < 55)){
+					if (myMonsters.size() < 1) {
+						generateMonster();
+						blackhole = true;
+					}
+					// }
 				}
-				// }
 			}
 
 			for (int w = 0; w < myMonsters.size(); w++) {
