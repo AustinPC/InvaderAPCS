@@ -6,8 +6,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import javax.sound.sampled.*;
+
 import java.io.*;
+
 import javax.swing.*;
 
 public class GameShell extends Applet implements KeyListener, MouseListener,
@@ -43,7 +46,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	private ArrayList<Character> myPlatforms;
 	private ArrayList<Character> myBullets;
 	private ArrayList<Character> myMonsters;
-	private ArrayList<Person> people;
+	private ArrayList<Person> people = new ArrayList<Person>();
 	// Objects for buffering
 	private Graphics offScreenBuffer;
 	private Image offScreenImage;
@@ -255,33 +258,28 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		int yp = 500;
 		int xp = (int) (Math.random() * 400);
 		
-		try {
-			
-			FileReader fr = new FileReader("/Users/austin2/Documents/workspace/InvaderAPCS/src/scores.txt");
-			BufferedReader br = new BufferedReader(fr);
-			int numOfLines = 0;
-			String s;
-			
-			while ((s = br.readLine()) != null) {
-				numOfLines++;
-				int num = Integer.parseInt(br.readLine());
-				Person per = new Person(s, num);
-				people.add(per);
-				System.out.print("Added: " + people.size());
+		Scanner s = null;
 
-			}
-//			br.reset();
-//			for(int i = 0; i <= 9; i++){
-//				int num = 0;//Integer.parseInt(br.readLine());
-//				Person per = new Person(s, num);
-//				people.add(per);
-//				System.out.print("Added: " + people.size());
-//			}
-			
-			fr.close();
-		} catch (IOException e) {
-			
-		}
+        try {
+            s = new Scanner(new BufferedReader(new FileReader("/Users/austin2/Documents/workspace/InvaderAPCS/src/scores.txt")));
+
+            while (s.hasNext()) {
+            	String name = s.next();
+                int num = s.nextInt();
+                
+                Person p = new Person(name, num);
+                
+                people.add(p);
+                
+            }
+        } catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+            if (s != null) {
+                s.close();
+            }
+        }
 
 		// myPlatforms.add(new Platform(1, xp, 500, 58, 15));
 	}
@@ -534,92 +532,40 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void readScores() {
-		people = new ArrayList<Person>();
 
-		File file = new File("scores.txt");
-		String content = "";
+		Person second;
+		Person first;
+		Person temp;
 
-		//if (people.size() > 0) {
+		if(people.size() > 0) {
+			
+			for (int i = people.size() - 1; i > 0; i--) {
+				first = people.get(i);
+				second = people.get(i - 1);
 
-			for (int k = people.size() - 1; k >= 0; k--) {
-				content += people.get(k).getName();
-				content += "\n" + people.get(k).getScore();
-				System.out.println(content);
-
-			}
-
-			try (FileOutputStream fop = new FileOutputStream(file)) {
-
-				// if file doesn't exists, then create it
-				if (!file.exists()) {
-					file.createNewFile();
-				}
-
-				// get the content in bytes
-				byte[] contentInBytes = content.getBytes();
-				System.out.println(content);
-				fop.write(contentInBytes);
-				fop.flush();
-				fop.close();
-
-				// System.out.println("Done");
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			try {
-
-				FileReader fr = new FileReader("scores.txt");
-				BufferedReader br = new BufferedReader(fr);
-				String s;
-				while ((s = br.readLine()) != null) {
-					int num = Integer.parseInt(br.readLine());
-					Person per = new Person(s, num);
-					people.add(per);
+				if (first.getScore() > second.getScore()) {
+					
+					temp = first;
+					people.set(i, second);
+					people.set(i - 1, temp);
 
 				}
-				fr.close();
-			} catch (IOException e) {
-		//	}
+			}
+
 		}
-
-		// System.out.print("People#: " + people.size());
-		// sort scores
-
-		ArrayList sorted = new ArrayList<Person>();
-
-		Person highest;
-		Person current;
-
-		while (people.size() > 0) {
-			int lowidx = 0;
-			highest = people.get(0);
-			// System.out.print(people.get(0));
-
-			for (int i = 1; i < people.size(); i++) {
-				current = people.get(i);
-
-				if (current.getScore() > highest.getScore()) {
-					highest = current;
-					lowidx = i;
-				}
-			}
-
-			sorted.add(highest);
-			people.remove(lowidx);
+		
+		if(people.size() > 6){
+			System.out.println("Entered");
+			people.remove(people.size() - 1);
 		}
-
-		people = sorted;
-		// drawScores();
-
+		
 	}
 
 	public void drawScores() {
 		int yi = 45;
 
 		// read from arraylist and draw on screen
-		for (int i = 0; i < people.size(); i++) {
+		for (int i = people.size() - 1; i >= 0; i--) {
 			Person temp = people.get(i);
 			// System.out.println("Name: " + people.get(i).getName());
 			int newY = 166 + (yi * i);
@@ -630,10 +576,27 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 	}
+	
+	public void saveScores(){
+		
+		try {
+			File file = new File("/Users/austin2/Documents/workspace/InvaderAPCS/src/scores.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            for(Person p : people){
+            	bw.write(p.getName()+"\n");
+            	bw.write(p.getScore()+"\n");
+            }
+            bw.close();
+        } catch(Exception e) { System.out.println("can't write to usedcommands.txt..."); }
+	}
 
 	public void calculateScore() {
 
-		readScores();
+		//readScores();
 
 		if (score > people.get(people.size() - 1).getScore()) {
 
@@ -664,25 +627,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			Person pers = new Person(name, score);
 			people.add(pers);
 
-			// add new hiscore to end
-			// keep moving up the hiscore table until it belongs
-
-			for (int k = people.size(); k > 0; k--) {
-				Person current = people.get(k - 1);
-
-				if (pers.getScore() > current.getScore()) {
-					// swap 2
-					Person temp = current;
-					people.set(k, pers);
-					people.set(k - 1, temp);
-				}
-			}
-			// keep array size at 6
-			if (people.size() >= 5) {
-				people.remove(5);
-			}
-			// readScores();
+			readScores();
 			drawScores();
+			saveScores();
 		}
 		
 	}
