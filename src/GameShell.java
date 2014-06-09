@@ -484,25 +484,26 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		try {
 			Scanner fileInput = new Scanner(scoreFile);
 			String line;
-			int num=0;
+			String txtLine = "";
+			int num = 0;
 			int count = 0;
 			while (fileInput.hasNextLine()){
 				line=fileInput.nextLine();
-				if(Integer.getInteger(line) == null){
+				if(isInteger(line) == false){
 					System.out.println(line);
+					txtLine=line;
 					count++;
 					//System.exit(1);
 				}
 				else{
-					String numLine = fileInput.nextLine();
-					System.out.println(numLine);
+					System.out.println(line);
 					num = Integer.parseInt(line);
 					count++;
 					//System.exit(1);
 				}
 				if (count == 2){
 					//System.exit(1);
-					Person per = new Person(line, num);
+					Person per = new Person(txtLine, num);
 					people.add(per);
 					count = 0;
 				}
@@ -511,7 +512,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+		System.out.println(people);
 		/*try {
 			FileReader fr = new FileReader("scores.txt");
 			BufferedReader br = new BufferedReader(fr);
@@ -529,7 +530,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	
 		for (int i= people.size()-1; i > 0; i--){
 			for (int j= 0; j < i; j++){
-				if (people.get(j).getScore() > people.get(j+1).getScore()){
+				if (people.get(j).getScore() < people.get(j+1).getScore()){
 					Person temp= people.get(j);
 					people.set(j, people.get(j+1));
 					people.set(j+1, temp);
@@ -548,7 +549,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		int yi = 45;
 
 		// read from arraylist and draw on screen
-		for (int i = 0; i < people.size(); i++) {
+		for (int i = 0; i < 6; i++) {
 			Person temp = people.get(i);
 
 			int newY = 166 + (yi * i);
@@ -1814,5 +1815,13 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 		}
 	}
-	
+	public static boolean isInteger(String s) {
+	    try { 
+	        Integer.parseInt(s); 
+	    } catch(NumberFormatException e) { 
+	        return false; 
+	    }
+	    // only got here if we didn't return false
+	    return true;
+	}
 }
