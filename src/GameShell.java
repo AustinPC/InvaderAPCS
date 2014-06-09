@@ -43,7 +43,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	private ArrayList<Character> myPlatforms;
 	private ArrayList<Character> myBullets;
 	private ArrayList<Character> myMonsters;
-	private ArrayList<Person> people;
+	private static ArrayList<Person> people= new ArrayList<Person>();
 	// Objects for buffering
 	private Graphics offScreenBuffer;
 	private Image offScreenImage;
@@ -480,7 +480,6 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void readScores() {
-		people = new ArrayList<Person>();
 //TODO- Implement Scanner instead of BufferedReader ()
 		try {
 			Scanner fileInput = new Scanner(scoreFile);
@@ -527,32 +526,20 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}*/
 
 		// sort scores
-
-		ArrayList<Person> sorted = new ArrayList<Person>();
-
-		Person highest;
-		Person current;
-
-		while (people.size() > 0) {
-			int lowidx = 0;
-			highest = people.get(0);
-
-			for (int i = 1; i < people.size(); i++) {
-				current = people.get(i);
-
-				if (current.getScore() > highest.getScore()) {
-					highest = current;
-					lowidx = i;
+	
+		for (int i= people.size()-1; i > 0; i--){
+			for (int j= 0; j < i; j++){
+				if (people.get(j).getScore() > people.get(j+1).getScore()){
+					Person temp= people.get(j);
+					people.set(j, people.get(j+1));
+					people.set(j+1, temp);
 				}
 			}
-
-			sorted.add(highest);
-			people.remove(lowidx);
 		}
+		
 
-		people = sorted;
+		
 		System.out.println(people);
-		System.exit(1);//SHOW AUSTIN!
 		drawScores();
 
 	}
