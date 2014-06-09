@@ -480,7 +480,6 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 	}
 
 	public void readScores() {
-//TODO- Implement Scanner instead of BufferedReader ()
 		try {
 			Scanner fileInput = new Scanner(scoreFile);
 			String line;
@@ -513,18 +512,6 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			e.printStackTrace();
 		}
 		System.out.println(people);
-		/*try {
-			FileReader fr = new FileReader("scores.txt");
-			BufferedReader br = new BufferedReader(fr);
-			String s;
-			while ((s = br.readLine()) != null) {
-				int num = Integer.parseInt(br.readLine());//Getting entire file
-				Person per = new Person(s, num);
-				people.add(per);
-			}
-			fr.close();
-		} catch (IOException e) {
-		}*/
 
 		// sort scores
 	
@@ -538,10 +525,9 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 			}
 		}
 		
-
-		
 		System.out.println(people);
 		drawScores();
+		saveScores();
 
 	}
 
@@ -560,7 +546,27 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		}
 
 	}
+	public void saveScores() {
 
+		try {
+			File file = new File(
+					"scores.txt");
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileWriter fw = new FileWriter(file.getAbsoluteFile());
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (Person p : people) {
+				bw.write(p.getName() + "\n");
+				bw.write(p.getScore() + "\n");
+			}
+			bw.close();
+		} catch (Exception e) {
+			System.out.println("can't write to usedcommands.txt...");
+		}
+		people.clear();
+	}
+	
 	public void calculateScore() {
 		readScores();
 
@@ -592,39 +598,22 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 
 			// write score to file
 			Person per = new Person(name, score);
-			people.add(per);
-			try{
-				//clears the file
-				PrintWriter pWriter = new PrintWriter(scoreFile);
-				pWriter.print("");
-				pWriter.close();
-				//writes new information to the file
-				FileWriter fWriter = new FileWriter(scoreFile.getAbsoluteFile());
-				BufferedWriter bWriter = new BufferedWriter(fWriter);
-				for (int i=0; i < people.size(); i++){
-					bWriter.write(people.get(i).getName());
-					bWriter.write("" + people.get(i).getScore());
-				}
-				bWriter.close();
-			}catch (IOException e){
-				e.printStackTrace();
-			}
-
 			// add new hiscore to end
+			people.add(per);
 			// keep moving up the hiscore table until it belongs
-
-			for (int k = people.size() - 1; k > 0; k--) {
-				Person current = people.get(k);
-
-				if (per.getScore() > current.getScore()) {
-					// swap 2
-					Person temp = current;
-					people.set(k, per);
-					people.set(k - 1, temp);
+			for (int i= people.size()-1; i > 0; i--){
+				for (int j= 0; j < i; j++){
+					if (people.get(j).getScore() < people.get(j+1).getScore()){
+						Person temp= people.get(j);
+						people.set(j, people.get(j+1));
+						people.set(j+1, temp);
+					}
 				}
 			}
+			
 			// keep array size at 6
 			people.remove(6);
+			System.out.println(people);
 
 		}
 
