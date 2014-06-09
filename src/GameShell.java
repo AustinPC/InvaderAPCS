@@ -564,7 +564,7 @@ public class GameShell extends Applet implements KeyListener, MouseListener,
 		} catch (Exception e) {
 			System.out.println("can't write to usedcommands.txt...");
 		}
-		people.clear();
+
 	}
 	
 	public void calculateScore() {
